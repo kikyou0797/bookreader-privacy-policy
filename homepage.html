@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookReader - 智能书籍阅读器</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #4B39EF 0%, #FF5963 50%, #EE8B60 100%);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* 导航栏 */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #4B39EF;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #4B39EF;
+        }
+
+        /* 主页面 */
+        .main-content {
+            margin-top: 80px;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 100px 0;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(45deg, #4B39EF, #39D2C0);
+            color: white;
+            padding: 15px 40px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(75, 57, 239, 0.4);
+        }
+
+        /* 功能特色区域 */
+        .features {
+            background: white;
+            padding: 80px 0;
+        }
+
+        .features h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 60px;
+            color: #333;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+
+        .feature-card {
+            text-align: center;
+            padding: 40px 30px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8f4ff 100%);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(75, 57, 239, 0.15);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .feature-card p {
+            color: #666;
+            line-height: 1.8;
+        }
+
+        /* 应用截图区域 */
+        .screenshots {
+            background: linear-gradient(135deg, #4B39EF 0%, #FF5963 50%, #EE8B60 100%);
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .screenshots h2 {
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 60px;
+        }
+
+        .screenshot-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .screenshot {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* 下载区域 */
+        .download {
+            background: white;
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .download h2 {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        .download p {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 40px;
+        }
+
+        .download-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .download-btn {
+            display: inline-block;
+            background: #333;
+            color: white;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: background 0.3s ease;
+        }
+
+        .download-btn:hover {
+            background: #555;
+        }
+
+        /* 页脚 */
+        .footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 40px 0;
+        }
+
+        /* 服务条款页面 */
+        .terms-section {
+            background: white;
+            padding: 40px 0;
+            display: none;
+        }
+
+        .terms-section.active {
+            display: block;
+        }
+
+        .terms-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .terms-content h1 {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            color: #333;
+            text-align: center;
+        }
+
+        .terms-content h2 {
+            font-size: 1.5rem;
+            margin: 30px 0 15px 0;
+            color: #4B39EF;
+        }
+
+        .terms-content p {
+            margin-bottom: 15px;
+            line-height: 1.8;
+            color: #666;
+        }
+
+        .terms-content ul {
+            margin: 15px 0 15px 30px;
+        }
+
+        .terms-content li {
+            margin-bottom: 10px;
+            color: #666;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .features h2,
+            .screenshots h2,
+            .download h2 {
+                font-size: 2rem;
+            }
+
+            .nav-links {
+                gap: 20px;
+            }
+
+            .download-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-content">
+                <div class="logo">📚 BookReader</div>
+                <div class="nav-links">
+                    <a href="#" onclick="showHome()">首页</a>
+                    <a href="#" onclick="showTerms()">服务条款</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主页内容 -->
+    <div id="home-section" class="main-content">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <h1>BookReader</h1>
+                <p>智能AI朗读，沉浸式阅读体验，让阅读变得更有趣</p>
+                <a href="#features" class="cta-button">探索功能</a>
+            </div>
+        </section>
+
+        <!-- 功能特色 -->
+        <section id="features" class="features">
+            <div class="container">
+                <h2>强大功能，精彩体验</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🤖</div>
+                        <h3>AI智能朗读</h3>
+                        <p>先进的AI语音技术，提供自然流畅的朗读体验，支持多种语音风格，让你的书籍"活"起来</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🎯</div>
+                        <h3>任务系统</h3>
+                        <p>完成阅读任务获得金币奖励，包括创建图书、体验AI朗读、收藏书籍等多种有趣任务</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📱</div>
+                        <h3>跨平台同步</h3>
+                        <p>支持iOS和Android双平台，云端数据同步，随时随地继续你的阅读旅程</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🏆</div>
+                        <h3>成就系统</h3>
+                        <p>连续登录奖励、阅读达人徽章，多种成就等你解锁，让阅读更有动力</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📚</div>
+                        <h3>个人图书馆</h3>
+                        <p>创建并管理你的专属图书收藏，支持多种格式，打造专属的数字图书馆</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔥</div>
+                        <h3>沉浸体验</h3>
+                        <p>精美的界面设计，流畅的阅读体验，专注模式让你完全沉浸在阅读的世界中</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 应用截图 -->
+        <section class="screenshots">
+            <div class="container">
+                <h2>精美界面设计</h2>
+                <p style="color: rgba(255,255,255,0.8); font-size: 1.2rem;">简洁优雅的设计，为你带来极致的阅读体验</p>
+                <div class="screenshot-grid">
+                    <div class="screenshot">
+                        <h3 style="color: white; margin-bottom: 10px;">主界面</h3>
+                        <p style="color: rgba(255,255,255,0.8);">清晰的图书管理界面</p>
+                    </div>
+                    <div class="screenshot">
+                        <h3 style="color: white; margin-bottom: 10px;">AI朗读</h3>
+                        <p style="color: rgba(255,255,255,0.8);">智能语音朗读控制</p>
+                    </div>
+                    <div class="screenshot">
+                        <h3 style="color: white; margin-bottom: 10px;">任务中心</h3>
+                        <p style="color: rgba(255,255,255,0.8);">丰富的任务和奖励系统</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 下载区域 -->
+        <section class="download">
+            <div class="container">
+                <h2>立即开始阅读之旅</h2>
+                <p>下载BookReader，开启你的智能阅读新体验</p>
+                <div class="download-buttons">
+                    <a href="#" class="download-btn">📱 App Store下载</a>
+                    <a href="#" class="download-btn">🤖 Google Play下载</a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- 服务条款页面 -->
+    <div id="terms-section" class="terms-section">
+        <div class="container">
+            <div class="terms-content">
+                <h1>BookReader 服务条款</h1>
+                
+                <p><strong>最后更新时间：</strong>2024年12月</p>
+                
+                <h2>1. 服务条款的接受</h2>
+                <p>欢迎使用BookReader应用程序（以下简称"本应用"或"服务"）。通过下载、安装或使用本应用，您同意遵守并受本服务条款约束。如果您不同意这些条款，请不要使用本服务。</p>
+
+                <h2>2. 服务描述</h2>
+                <p>BookReader是一款智能书籍阅读器应用，提供以下主要功能：</p>
+                <ul>
+                    <li>AI智能朗读功能</li>
+                    <li>个人图书库管理</li>
+                    <li>任务系统和金币奖励</li>
+                    <li>跨平台数据同步</li>
+                    <li>阅读进度追踪</li>
+                    <li>成就系统</li>
+                </ul>
+
+                <h2>3. 用户账户</h2>
+                <p>为使用某些功能，您可能需要创建账户。您有责任：</p>
+                <ul>
+                    <li>提供准确、完整的注册信息</li>
+                    <li>保护账户密码的安全</li>
+                    <li>对您账户下的所有活动负责</li>
+                    <li>及时通知我们任何未经授权的账户使用</li>
+                </ul>
+
+                <h2>4. 用户行为规范</h2>
+                <p>使用本服务时，您同意：</p>
+                <ul>
+                    <li>不上传、分享违法、有害或侵犯他人权利的内容</li>
+                    <li>不尝试破解、逆向工程或干扰应用功能</li>
+                    <li>不进行任何可能损害服务或其他用户体验的行为</li>
+                    <li>遵守适用的法律法规</li>
+                </ul>
+
+                <h2>5. 知识产权</h2>
+                <p>本应用及其所有内容（包括但不限于软件、图形、文本、图像）均受知识产权法保护。除非明确授权，您不得：</p>
+                <ul>
+                    <li>复制、修改、分发应用或其内容</li>
+                    <li>对应用进行反向工程</li>
+                    <li>移除或修改任何版权声明</li>
+                </ul>
+
+                <h2>6. 隐私保护</h2>
+                <p>我们重视您的隐私保护。我们收集和使用您的信息仅用于：</p>
+                <ul>
+                    <li>提供和改善服务</li>
+                    <li>同步您的阅读数据</li>
+                    <li>发送服务相关通知</li>
+                    <li>统计分析以优化用户体验</li>
+                </ul>
+                <p>我们不会向第三方出售您的个人信息。</p>
+
+                <h2>7. 金币和虚拟物品</h2>
+                <p>应用内的金币系统：</p>
+                <ul>
+                    <li>金币仅可在应用内使用，无现金价值</li>
+                    <li>金币不可转让或兑换为现金</li>
+                    <li>我们保留调整金币获取和使用规则的权利</li>
+                    <li>账户删除时，所有金币将被清除</li>
+                </ul>
+
+                <h2>8. 服务的修改和终止</h2>
+                <p>我们保留随时修改、暂停或终止服务的权利，包括：</p>
+                <ul>
+                    <li>增加、修改或移除功能</li>
+                    <li>因维护需要暂停服务</li>
+                    <li>因技术或商业原因终止服务</li>
+                </ul>
+                <p>我们将尽力提前通知重大变更。</p>
+
+                <h2>9. 免责声明</h2>
+                <p>本服务按"现状"提供，我们不保证：</p>
+                <ul>
+                    <li>服务将不间断或无错误</li>
+                    <li>所有缺陷都将被修复</li>
+                    <li>服务满足您的特定需求</li>
+                </ul>
+                <p>您使用本服务的风险由您自行承担。</p>
+
+                <h2>10. 责任限制</h2>
+                <p>在法律允许的最大范围内，我们的责任限于：</p>
+                <ul>
+                    <li>不承担因使用或无法使用服务而产生的任何间接损失</li>
+                    <li>总责任不超过您在过去12个月内支付给我们的费用</li>
+                </ul>
+
+                <h2>11. 争议解决</h2>
+                <p>因本服务条款产生的争议，双方应友好协商解决。协商不成的，提交有管辖权的人民法院解决。</p>
+
+                <h2>12. 条款修改</h2>
+                <p>我们可能会不时修改这些服务条款。修改后的条款将在应用内发布，继续使用服务即视为接受修改后的条款。</p>
+
+                <h2>13. 联系我们</h2>
+                <p>如果您对这些服务条款有任何疑问，请通过以下方式联系我们：</p>
+                <ul>
+                    <li>邮箱：support@bookreader.app（示例邮箱）</li>
+                    <li>在线客服：通过应用内反馈功能</li>
+                </ul>
+
+                <p><em>本服务条款自发布之日起生效。</em></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 BookReader. 保留所有权利。</p>
+            <p>让阅读成为一种享受 📚</p>
+        </div>
+    </footer>
+
+    <script>
+        function showHome() {
+            document.getElementById('home-section').style.display = 'block';
+            document.getElementById('terms-section').style.display = 'none';
+            document.title = 'BookReader - 智能书籍阅读器';
+        }
+
+        function showTerms() {
+            document.getElementById('home-section').style.display = 'none';
+            document.getElementById('terms-section').style.display = 'block';
+            document.title = 'BookReader - 服务条款';
+        }
+
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // 导航栏滚动效果
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.style.background = 'rgba(255, 255, 255, 0.98)';
+            } else {
+                navbar.style.background = 'rgba(255, 255, 255, 0.95)';
+            }
+        });
+    </script>
+</body>
+</html> 
