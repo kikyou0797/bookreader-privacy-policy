@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouRe - Terms of Service</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #4B39EF 0%, #FF5963 50%, #EE8B60 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .terms-content {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            padding: 40px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #4B39EF;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .language-selector {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .language-btn {
+            background: none;
+            border: 1px solid #ddd;
+            padding: 5px 10px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s ease;
+            color: #333;
+        }
+
+        .language-btn:hover {
+            background: #4B39EF;
+            color: white;
+            border-color: #4B39EF;
+        }
+
+        .language-btn.active {
+            background: #4B39EF;
+            color: white;
+            border-color: #4B39EF;
+        }
+
+        .back-link {
+            display: inline-block;
+            background: #4B39EF;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 25px;
+            margin-bottom: 20px;
+            font-weight: 600;
+            transition: background 0.3s ease;
+        }
+
+        .back-link:hover {
+            background: #39D2C0;
+        }
+
+        .terms-content h2 {
+            font-size: 1.5rem;
+            margin: 30px 0 15px 0;
+            color: #4B39EF;
+        }
+
+        .terms-content p {
+            margin-bottom: 15px;
+            line-height: 1.8;
+            color: #666;
+        }
+
+        .terms-content ul {
+            margin: 15px 0 15px 30px;
+        }
+
+        .terms-content li {
+            margin-bottom: 10px;
+            color: #666;
+        }
+
+        .update-date {
+            font-style: italic;
+            color: #888;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .terms-content {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .language-selector {
+                gap: 5px;
+            }
+
+            .language-btn {
+                padding: 3px 8px;
+                font-size: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="terms-content">
+            <div class="header">
+                <div class="language-selector">
+                    <button class="language-btn" onclick="changeLanguage('zh')">中文</button>
+                    <button class="language-btn active" onclick="changeLanguage('en')">English</button>
+                    <button class="language-btn" onclick="changeLanguage('ja')">日本語</button>
+                </div>
+                <h1 data-key="terms-title">YouRe Terms of Service</h1>
+                <a href="index.html" class="back-link" data-key="back-home">← Back to Home</a>
+            </div>
+            
+            <p class="update-date" data-key="update-date"><strong>Last Updated:</strong> December 2024</p>
+            
+            <div id="terms-content">
+                <h2 data-key="section1-title">1. Acceptance of Terms</h2>
+                <p data-key="section1-content">Welcome to YouRe application. By downloading, installing or using this application, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use this service.</p>
+
+                <h2 data-key="section2-title">2. Service Description</h2>
+                <p data-key="section2-intro">YouRe is a smart reading application that provides the following main features:</p>
+                <ul>
+                    <li data-key="feature-ai">AI intelligent voice reading</li>
+                    <li data-key="feature-library">Personal book library management</li>
+                    <li data-key="feature-missions">Mission system and coin rewards</li>
+                    <li data-key="feature-recording">Parent voice recording functionality</li>
+                    <li data-key="feature-progress">Reading progress tracking</li>
+                    <li data-key="feature-achievements">Achievement system</li>
+                </ul>
+
+                <h2 data-key="section3-title">3. User Accounts</h2>
+                <p data-key="section3-intro">To use certain features, you may need to create an account. You are responsible for:</p>
+                <ul>
+                    <li data-key="responsibility1">Providing accurate and complete registration information</li>
+                    <li data-key="responsibility2">Protecting the security of your account password</li>
+                    <li data-key="responsibility3">Being responsible for all activities under your account</li>
+                    <li data-key="responsibility4">Promptly notifying us of any unauthorized account use</li>
+                </ul>
+
+                <h2 data-key="section4-title">4. User Conduct</h2>
+                <p data-key="section4-intro">When using this service, you agree to:</p>
+                <ul>
+                    <li data-key="rule1">Not upload or share illegal, harmful or infringing content</li>
+                    <li data-key="rule2">Not attempt to crack, reverse engineer or interfere with application functions</li>
+                    <li data-key="rule3">Not engage in any behavior that may damage the service or other users' experience</li>
+                    <li data-key="rule4">Comply with applicable laws and regulations</li>
+                </ul>
+
+                <h2 data-key="section5-title">5. Intellectual Property</h2>
+                <p data-key="section5-intro">This application and all its content are protected by intellectual property law. Unless expressly authorized, you may not:</p>
+                <ul>
+                    <li data-key="restriction1">Copy, modify, or distribute the application or its content</li>
+                    <li data-key="restriction2">Reverse engineer the application</li>
+                    <li data-key="restriction3">Remove or modify any copyright notices</li>
+                </ul>
+
+                <h2 data-key="section6-title">6. Privacy Protection</h2>
+                <p data-key="section6-intro">We value your privacy protection. We collect and use your information only for:</p>
+                <ul>
+                    <li data-key="purpose1">Providing and improving services</li>
+                    <li data-key="purpose2">Synchronizing your reading data</li>
+                    <li data-key="purpose3">Sending service-related notifications</li>
+                    <li data-key="purpose4">Statistical analysis to optimize user experience</li>
+                </ul>
+                <p data-key="section6-commitment">We will not sell your personal information to third parties.</p>
+
+                <h2 data-key="section7-title">7. Coins and Virtual Items</h2>
+                <p data-key="section7-intro">The in-app coin system:</p>
+                <ul>
+                    <li data-key="coin-rule1">Coins can only be used within the application and have no cash value</li>
+                    <li data-key="coin-rule2">Coins cannot be transferred or exchanged for cash</li>
+                    <li data-key="coin-rule3">We reserve the right to adjust coin earning and usage rules</li>
+                    <li data-key="coin-rule4">All coins will be cleared when the account is deleted</li>
+                </ul>
+
+                <h2 data-key="section8-title">8. Service Modification and Termination</h2>
+                <p data-key="section8-intro">We reserve the right to modify, suspend or terminate the service at any time, including:</p>
+                <ul>
+                    <li data-key="right1">Adding, modifying or removing features</li>
+                    <li data-key="right2">Suspending service for maintenance needs</li>
+                    <li data-key="right3">Terminating service for technical or business reasons</li>
+                </ul>
+                <p data-key="section8-notice">We will make reasonable efforts to provide advance notice of major changes.</p>
+
+                <h2 data-key="section9-title">9. Disclaimer</h2>
+                <p data-key="section9-intro">This service is provided "as is," and we do not guarantee:</p>
+                <ul>
+                    <li data-key="disclaimer1">The service will be uninterrupted or error-free</li>
+                    <li data-key="disclaimer2">All defects will be corrected</li>
+                    <li data-key="disclaimer3">The service meets your specific needs</li>
+                </ul>
+                <p data-key="section9-risk">You use this service at your own risk.</p>
+
+                <h2 data-key="section10-title">10. Limitation of Liability</h2>
+                <p data-key="section10-intro">To the maximum extent permitted by law, our liability is limited to:</p>
+                <ul>
+                    <li data-key="limit1">Not liable for any indirect losses arising from use or inability to use the service</li>
+                    <li data-key="limit2">Total liability shall not exceed the fees you paid to us in the past 12 months</li>
+                </ul>
+
+                <h2 data-key="section11-title">11. Dispute Resolution</h2>
+                <p data-key="section11-content">Disputes arising from these Terms of Service shall be resolved through friendly consultation between the parties. If consultation fails, they shall be submitted to the competent court for resolution.</p>
+
+                <h2 data-key="section12-title">12. Terms Modification</h2>
+                <p data-key="section12-content">We may modify these Terms of Service from time to time. Modified terms will be posted within the application, and continued use of the service constitutes acceptance of the modified terms.</p>
+
+                <h2 data-key="section13-title">13. Contact Us</h2>
+                <p data-key="section13-intro">If you have any questions about these Terms of Service, please contact us through:</p>
+                <ul>
+                    <li data-key="contact-email">Email: support@youre.app</li>
+                    <li data-key="contact-app">Online customer service: Through in-app feedback function</li>
+                </ul>
+
+                <p data-key="effective-date"><em>These Terms of Service are effective from the date of publication.</em></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const translations = {
+            zh: {
+                'terms-title': 'YouRe 服务条款',
+                'back-home': '← 返回首页',
+                'update-date': '<strong>最后更新时间：</strong>2024年12月',
+                'section1-title': '1. 服务条款的接受',
+                'section1-content': '欢迎使用YouRe应用程序。通过下载、安装或使用本应用，您同意遵守并受本服务条款约束。如果您不同意这些条款，请不要使用本服务。',
+                'section2-title': '2. 服务描述',
+                'section2-intro': 'YouRe是一款智能书籍阅读器应用，提供以下主要功能：',
+                'feature-ai': 'AI智能朗读功能',
+                'feature-library': '个人图书库管理',
+                'feature-missions': '任务系统和金币奖励',
+                'feature-recording': '父母录音功能',
+                'feature-progress': '阅读进度追踪',
+                'feature-achievements': '成就系统',
+                'section3-title': '3. 用户账户',
+                'section3-intro': '为使用某些功能，您可能需要创建账户。您有责任：',
+                'responsibility1': '提供准确、完整的注册信息',
+                'responsibility2': '保护账户密码的安全',
+                'responsibility3': '对您账户下的所有活动负责',
+                'responsibility4': '及时通知我们任何未经授权的账户使用',
+                'section4-title': '4. 用户行为规范',
+                'section4-intro': '使用本服务时，您同意：',
+                'rule1': '不上传、分享违法、有害或侵犯他人权利的内容',
+                'rule2': '不尝试破解、逆向工程或干扰应用功能',
+                'rule3': '不进行任何可能损害服务或其他用户体验的行为',
+                'rule4': '遵守适用的法律法规',
+                'section5-title': '5. 知识产权',
+                'section5-intro': '本应用及其所有内容均受知识产权法保护。除非明确授权，您不得：',
+                'restriction1': '复制、修改、分发应用或其内容',
+                'restriction2': '对应用进行反向工程',
+                'restriction3': '移除或修改任何版权声明',
+                'section6-title': '6. 隐私保护',
+                'section6-intro': '我们重视您的隐私保护。我们收集和使用您的信息仅用于：',
+                'purpose1': '提供和改善服务',
+                'purpose2': '同步您的阅读数据',
+                'purpose3': '发送服务相关通知',
+                'purpose4': '统计分析以优化用户体验',
+                'section6-commitment': '我们不会向第三方出售您的个人信息。',
+                'section7-title': '7. 金币和虚拟物品',
+                'section7-intro': '应用内的金币系统：',
+                'coin-rule1': '金币仅可在应用内使用，无现金价值',
+                'coin-rule2': '金币不可转让或兑换为现金',
+                'coin-rule3': '我们保留调整金币获取和使用规则的权利',
+                'coin-rule4': '账户删除时，所有金币将被清除',
+                'section8-title': '8. 服务的修改和终止',
+                'section8-intro': '我们保留随时修改、暂停或终止服务的权利，包括：',
+                'right1': '增加、修改或移除功能',
+                'right2': '因维护需要暂停服务',
+                'right3': '因技术或商业原因终止服务',
+                'section8-notice': '我们将尽力提前通知重大变更。',
+                'section9-title': '9. 免责声明',
+                'section9-intro': '本服务按"现状"提供，我们不保证：',
+                'disclaimer1': '服务将不间断或无错误',
+                'disclaimer2': '所有缺陷都将被修复',
+                'disclaimer3': '服务满足您的特定需求',
+                'section9-risk': '您使用本服务的风险由您自行承担。',
+                'section10-title': '10. 责任限制',
+                'section10-intro': '在法律允许的最大范围内，我们的责任限于：',
+                'limit1': '不承担因使用或无法使用服务而产生的任何间接损失',
+                'limit2': '总责任不超过您在过去12个月内支付给我们的费用',
+                'section11-title': '11. 争议解决',
+                'section11-content': '因本服务条款产生的争议，双方应友好协商解决。协商不成的，提交有管辖权的法院解决。',
+                'section12-title': '12. 条款修改',
+                'section12-content': '我们可能会不时修改这些服务条款。修改后的条款将在应用内发布，继续使用服务即视为接受修改后的条款。',
+                'section13-title': '13. 联系我们',
+                'section13-intro': '如果您对这些服务条款有任何疑问，请通过以下方式联系我们：',
+                'contact-email': '邮箱：support@youre.app',
+                'contact-app': '在线客服：通过应用内反馈功能',
+                'effective-date': '<em>本服务条款自发布之日起生效。</em>'
+            },
+            en: {
+                'terms-title': 'YouRe Terms of Service',
+                'back-home': '← Back to Home', 
+                'update-date': '<strong>Last Updated:</strong> December 2024',
+                'section1-title': '1. Acceptance of Terms',
+                'section1-content': 'Welcome to YouRe application. By downloading, installing or using this application, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use this service.',
+                'section2-title': '2. Service Description',
+                'section2-intro': 'YouRe is a smart reading application that provides the following main features:',
+                'feature-ai': 'AI intelligent voice reading',
+                'feature-library': 'Personal book library management',
+                'feature-missions': 'Mission system and coin rewards',
+                'feature-recording': 'Parent voice recording functionality',
+                'feature-progress': 'Reading progress tracking',
+                'feature-achievements': 'Achievement system',
+                'section3-title': '3. User Accounts',
+                'section3-intro': 'To use certain features, you may need to create an account. You are responsible for:',
+                'responsibility1': 'Providing accurate and complete registration information',
+                'responsibility2': 'Protecting the security of your account password',
+                'responsibility3': 'Being responsible for all activities under your account',
+                'responsibility4': 'Promptly notifying us of any unauthorized account use',
+                'section4-title': '4. User Conduct',
+                'section4-intro': 'When using this service, you agree to:',
+                'rule1': 'Not upload or share illegal, harmful or infringing content',
+                'rule2': 'Not attempt to crack, reverse engineer or interfere with application functions',
+                'rule3': 'Not engage in any behavior that may damage the service or other users\' experience',
+                'rule4': 'Comply with applicable laws and regulations',
+                'section5-title': '5. Intellectual Property',
+                'section5-intro': 'This application and all its content are protected by intellectual property law. Unless expressly authorized, you may not:',
+                'restriction1': 'Copy, modify, or distribute the application or its content',
+                'restriction2': 'Reverse engineer the application',
+                'restriction3': 'Remove or modify any copyright notices',
+                'section6-title': '6. Privacy Protection',
+                'section6-intro': 'We value your privacy protection. We collect and use your information only for:',
+                'purpose1': 'Providing and improving services',
+                'purpose2': 'Synchronizing your reading data',
+                'purpose3': 'Sending service-related notifications',
+                'purpose4': 'Statistical analysis to optimize user experience',
+                'section6-commitment': 'We will not sell your personal information to third parties.',
+                'section7-title': '7. Coins and Virtual Items',
+                'section7-intro': 'The in-app coin system:',
+                'coin-rule1': 'Coins can only be used within the application and have no cash value',
+                'coin-rule2': 'Coins cannot be transferred or exchanged for cash',
+                'coin-rule3': 'We reserve the right to adjust coin earning and usage rules',
+                'coin-rule4': 'All coins will be cleared when the account is deleted',
+                'section8-title': '8. Service Modification and Termination',
+                'section8-intro': 'We reserve the right to modify, suspend or terminate the service at any time, including:',
+                'right1': 'Adding, modifying or removing features',
+                'right2': 'Suspending service for maintenance needs',
+                'right3': 'Terminating service for technical or business reasons',
+                'section8-notice': 'We will make reasonable efforts to provide advance notice of major changes.',
+                'section9-title': '9. Disclaimer',
+                'section9-intro': 'This service is provided "as is," and we do not guarantee:',
+                'disclaimer1': 'The service will be uninterrupted or error-free',
+                'disclaimer2': 'All defects will be corrected',
+                'disclaimer3': 'The service meets your specific needs',
+                'section9-risk': 'You use this service at your own risk.',
+                'section10-title': '10. Limitation of Liability',
+                'section10-intro': 'To the maximum extent permitted by law, our liability is limited to:',
+                'limit1': 'Not liable for any indirect losses arising from use or inability to use the service',
+                'limit2': 'Total liability shall not exceed the fees you paid to us in the past 12 months',
+                'section11-title': '11. Dispute Resolution',
+                'section11-content': 'Disputes arising from these Terms of Service shall be resolved through friendly consultation between the parties. If consultation fails, they shall be submitted to the competent court for resolution.',
+                'section12-title': '12. Terms Modification',
+                'section12-content': 'We may modify these Terms of Service from time to time. Modified terms will be posted within the application, and continued use of the service constitutes acceptance of the modified terms.',
+                'section13-title': '13. Contact Us',
+                'section13-intro': 'If you have any questions about these Terms of Service, please contact us through:',
+                'contact-email': 'Email: support@youre.app',
+                'contact-app': 'Online customer service: Through in-app feedback function',
+                'effective-date': '<em>These Terms of Service are effective from the date of publication.</em>'
+            },
+            ja: {
+                'terms-title': 'YouRe 利用規約',
+                'back-home': '← ホームに戻る',
+                'update-date': '<strong>最終更新：</strong>2024年12月',
+                'section1-title': '1. 規約の承諾',
+                'section1-content': 'YouReアプリケーションにようこそ。本アプリをダウンロード、インストール、または使用することにより、お客様はこの利用規約に拘束されることに同意するものとします。これらの規約に同意されない場合は、本サービスをご利用にならないでください。',
+                'section2-title': '2. サービスの説明',
+                'section2-intro': 'YouReは以下の主要機能を提供するスマート読書アプリケーションです：',
+                'feature-ai': 'AIインテリジェント音声読み上げ',
+                'feature-library': '個人図書館管理',
+                'feature-missions': 'ミッションシステムとコイン報酬',
+                'feature-recording': '親の音声録音機能',
+                'feature-progress': '読書進捗追跡',
+                'feature-achievements': '達成システム',
+                'section3-title': '3. ユーザーアカウント',
+                'section3-intro': '特定の機能を使用するために、アカウントを作成する必要がある場合があります。お客様は以下について責任を負います：',
+                'responsibility1': '正確で完全な登録情報の提供',
+                'responsibility2': 'アカウントパスワードのセキュリティ保護',
+                'responsibility3': 'お客様のアカウント下でのすべての活動に対する責任',
+                'responsibility4': '不正なアカウント使用の迅速な通知',
+                'section4-title': '4. ユーザー行動',
+                'section4-intro': '本サービスを使用する際、お客様は以下に同意します：',
+                'rule1': '違法、有害、または他者の権利を侵害するコンテンツをアップロードまたは共有しない',
+                'rule2': 'アプリケーション機能のクラック、リバースエンジニアリング、または干渉を試みない',
+                'rule3': 'サービスや他のユーザーの体験を損なう可能性のある行為を行わない',
+                'rule4': '適用される法律および規制を遵守する',
+                'section5-title': '5. 知的財産',
+                'section5-intro': '本アプリケーションおよびそのすべてのコンテンツは知的財産法によって保護されています。明示的に許可されない限り、お客様は以下を行うことはできません：',
+                'restriction1': 'アプリケーションまたはそのコンテンツのコピー、修正、配布',
+                'restriction2': 'アプリケーションのリバースエンジニアリング',
+                'restriction3': '著作権表示の削除または修正',
+                'section6-title': '6. プライバシー保護',
+                'section6-intro': '私たちはお客様のプライバシー保護を重視しています。お客様の情報の収集と使用は以下の目的でのみ行います：',
+                'purpose1': 'サービスの提供と改善',
+                'purpose2': '読書データの同期',
+                'purpose3': 'サービス関連通知の送信',
+                'purpose4': 'ユーザー体験最適化のための統計分析',
+                'section6-commitment': '私たちはお客様の個人情報を第三者に販売することはありません。',
+                'section7-title': '7. コインと仮想アイテム',
+                'section7-intro': 'アプリ内コインシステム：',
+                'coin-rule1': 'コインはアプリケーション内でのみ使用でき、現金価値はありません',
+                'coin-rule2': 'コインは譲渡または現金との交換はできません',
+                'coin-rule3': 'コインの獲得と使用ルールを調整する権利を留保します',
+                'coin-rule4': 'アカウント削除時、すべてのコインがクリアされます',
+                'section8-title': '8. サービスの修正と終了',
+                'section8-intro': '私たちは以下を含め、いつでもサービスを修正、一時停止、または終了する権利を留保します：',
+                'right1': '機能の追加、修正、削除',
+                'right2': 'メンテナンスのためのサービス一時停止',
+                'right3': '技術的または事業的理由によるサービス終了',
+                'section8-notice': '私たちは重要な変更について事前通知するよう合理的な努力をします。',
+                'section9-title': '9. 免責事項',
+                'section9-intro': '本サービスは「現状のまま」提供され、私たちは以下を保証しません：',
+                'disclaimer1': 'サービスが中断されないまたはエラーフリーであること',
+                'disclaimer2': 'すべての欠陥が修正されること',
+                'disclaimer3': 'サービスがお客様の特定のニーズを満たすこと',
+                'section9-risk': 'お客様は自己責任で本サービスを使用します。',
+                'section10-title': '10. 責任の制限',
+                'section10-intro': '法律で許可される最大限の範囲で、私たちの責任は以下に制限されます：',
+                'limit1': 'サービスの使用または使用不能から生じる間接的損失について責任を負わない',
+                'limit2': '総責任は過去12ヶ月間にお客様が私たちに支払った料金を超えない',
+                'section11-title': '11. 紛争解決',
+                'section11-content': 'この利用規約から生じる紛争は、当事者間の友好的な協議により解決されるものとします。協議が失敗した場合は、管轄権を有する法院に提出されます。',
+                'section12-title': '12. 規約の修正',
+                'section12-content': '私たちは随時この利用規約を修正する場合があります。修正された規約はアプリケーション内に投稿され、サービスの継続使用は修正された規約の受諾を構成します。',
+                'section13-title': '13. お問い合わせ',
+                'section13-intro': 'この利用規約についてご質問がある場合は、以下の方法でお問い合わせください：',
+                'contact-email': 'メール：support@youre.app',
+                'contact-app': 'オンラインカスタマーサービス：アプリ内フィードバック機能を通じて',
+                'effective-date': '<em>この利用規約は公開日から有効です。</em>'
+            }
+        };
+
+        let currentLanguage = 'en';
+
+        function changeLanguage(lang) {
+            currentLanguage = lang;
+            document.querySelectorAll('.language-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            updatePageContent();
+            localStorage.setItem('terms-language', lang);
+        }
+
+        function updatePageContent() {
+            const translation = translations[currentLanguage];
+            document.querySelectorAll('[data-key]').forEach(element => {
+                const key = element.getAttribute('data-key');
+                if (translation[key]) {
+                    element.innerHTML = translation[key];
+                }
+            });
+            document.title = translation['terms-title'];
+        }
+
+        window.addEventListener('DOMContentLoaded', function() {
+            const savedLanguage = localStorage.getItem('terms-language') || 'en';
+            document.querySelectorAll('.language-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent.includes('中文') && savedLanguage === 'zh') btn.classList.add('active');
+                if (btn.textContent.includes('English') && savedLanguage === 'en') btn.classList.add('active');
+                if (btn.textContent.includes('日本語') && savedLanguage === 'ja') btn.classList.add('active');
+            });
+            currentLanguage = savedLanguage;
+            updatePageContent();
+        });
+    </script>
+</body>
+</html> 
