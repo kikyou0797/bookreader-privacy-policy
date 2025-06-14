@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BookReader - 智能书籍阅读器</title>
+    <title>YouRe - Smart Reading App</title>
     <style>
         * {
             margin: 0;
@@ -230,52 +230,36 @@
             padding: 40px 0;
         }
 
-        /* 服务条款页面 */
-        .terms-section {
-            background: white;
-            padding: 40px 0;
-            display: none;
+
+
+        /* 语言切换 */
+        .language-selector {
+            display: flex;
+            gap: 10px;
+            align-items: center;
         }
 
-        .terms-section.active {
-            display: block;
-        }
-
-        .terms-content {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 40px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
-
-        .terms-content h1 {
-            font-size: 2.5rem;
-            margin-bottom: 30px;
+        .language-btn {
+            background: none;
+            border: 1px solid #ddd;
+            padding: 5px 10px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s ease;
             color: #333;
-            text-align: center;
         }
 
-        .terms-content h2 {
-            font-size: 1.5rem;
-            margin: 30px 0 15px 0;
-            color: #4B39EF;
+        .language-btn:hover {
+            background: #4B39EF;
+            color: white;
+            border-color: #4B39EF;
         }
 
-        .terms-content p {
-            margin-bottom: 15px;
-            line-height: 1.8;
-            color: #666;
-        }
-
-        .terms-content ul {
-            margin: 15px 0 15px 30px;
-        }
-
-        .terms-content li {
-            margin-bottom: 10px;
-            color: #666;
+        .language-btn.active {
+            background: #4B39EF;
+            color: white;
+            border-color: #4B39EF;
         }
 
         /* 响应式设计 */
@@ -302,6 +286,15 @@
                 flex-direction: column;
                 align-items: center;
             }
+
+            .language-selector {
+                gap: 5px;
+            }
+
+            .language-btn {
+                padding: 3px 8px;
+                font-size: 10px;
+            }
         }
     </style>
 </head>
@@ -310,60 +303,65 @@
     <nav class="navbar">
         <div class="container">
             <div class="nav-content">
-                <div class="logo">📚 BookReader</div>
+                <div class="logo">📚 YouRe</div>
                 <div class="nav-links">
-                    <a href="#" onclick="showHome()">首页</a>
-                    <a href="#" onclick="showTerms()">服务条款</a>
+                    <a href="#" data-key="nav-home">Home</a>
+                    <a href="terms.html" data-key="nav-terms">Terms of Service</a>
+                    <div class="language-selector">
+                        <button class="language-btn" onclick="changeLanguage('zh')">中文</button>
+                        <button class="language-btn active" onclick="changeLanguage('en')">English</button>
+                        <button class="language-btn" onclick="changeLanguage('ja')">日本語</button>
+                    </div>
                 </div>
             </div>
         </div>
     </nav>
 
     <!-- 主页内容 -->
-    <div id="home-section" class="main-content">
+    <div class="main-content">
         <!-- Hero Section -->
         <section class="hero">
             <div class="container">
-                <h1>BookReader</h1>
-                <p>智能AI朗读，沉浸式阅读体验，让阅读变得更有趣</p>
-                <a href="#features" class="cta-button">探索功能</a>
+                <h1>YouRe</h1>
+                <p data-key="hero-subtitle">Intelligent AI narration, immersive reading experience, making reading more enjoyable</p>
+                <a href="#features" class="cta-button" data-key="hero-cta">Explore Features</a>
             </div>
         </section>
 
         <!-- 功能特色 -->
         <section id="features" class="features">
             <div class="container">
-                <h2>强大功能，精彩体验</h2>
+                <h2 data-key="features-title">Powerful Features, Amazing Experience</h2>
                 <div class="features-grid">
                     <div class="feature-card">
                         <div class="feature-icon">🤖</div>
-                        <h3>AI智能朗读</h3>
-                        <p>先进的AI语音技术，提供自然流畅的朗读体验，支持多种语音风格，让你的书籍"活"起来</p>
+                        <h3 data-key="feature1-title">AI Smart Reading</h3>
+                        <p data-key="feature1-desc">Advanced AI voice technology provides natural and smooth reading experience with multiple voice styles, bringing your books to life</p>
                     </div>
                     <div class="feature-card">
                         <div class="feature-icon">🎯</div>
-                        <h3>任务系统</h3>
-                        <p>完成阅读任务获得金币奖励，包括创建图书、体验AI朗读、收藏书籍等多种有趣任务</p>
+                        <h3 data-key="feature2-title">Mission System</h3>
+                        <p data-key="feature2-desc">Complete reading tasks to earn coin rewards, including creating books, experiencing AI reading, collecting books and other interesting tasks</p>
                     </div>
                     <div class="feature-card">
-                        <div class="feature-icon">📱</div>
-                        <h3>跨平台同步</h3>
-                        <p>支持iOS和Android双平台，云端数据同步，随时随地继续你的阅读旅程</p>
+                        <div class="feature-icon">🎤</div>
+                        <h3 data-key="feature3-title">Parent Voice Recording</h3>
+                        <p data-key="feature3-desc">Parents can record their own voice to read stories for children, letting kids hear mom and dad anytime, freeing up parents' time</p>
                     </div>
                     <div class="feature-card">
                         <div class="feature-icon">🏆</div>
-                        <h3>成就系统</h3>
-                        <p>连续登录奖励、阅读达人徽章，多种成就等你解锁，让阅读更有动力</p>
+                        <h3 data-key="feature4-title">Achievement System</h3>
+                        <p data-key="feature4-desc">Daily login rewards, reading master badges, unlock various achievements to make reading more motivating</p>
                     </div>
                     <div class="feature-card">
                         <div class="feature-icon">📚</div>
-                        <h3>个人图书馆</h3>
-                        <p>创建并管理你的专属图书收藏，支持多种格式，打造专属的数字图书馆</p>
+                        <h3 data-key="feature5-title">Personal Library</h3>
+                        <p data-key="feature5-desc">Create and manage your exclusive book collection, support multiple formats, build your own digital library</p>
                     </div>
                     <div class="feature-card">
                         <div class="feature-icon">🔥</div>
-                        <h3>沉浸体验</h3>
-                        <p>精美的界面设计，流畅的阅读体验，专注模式让你完全沉浸在阅读的世界中</p>
+                        <h3 data-key="feature6-title">Immersive Experience</h3>
+                        <p data-key="feature6-desc">Beautiful interface design, smooth reading experience, focus mode lets you completely immerse in the world of reading</p>
                     </div>
                 </div>
             </div>
@@ -372,20 +370,20 @@
         <!-- 应用截图 -->
         <section class="screenshots">
             <div class="container">
-                <h2>精美界面设计</h2>
-                <p style="color: rgba(255,255,255,0.8); font-size: 1.2rem;">简洁优雅的设计，为你带来极致的阅读体验</p>
+                <h2 data-key="screenshots-title">Beautiful Interface Design</h2>
+                <p style="color: rgba(255,255,255,0.8); font-size: 1.2rem;" data-key="screenshots-subtitle">Clean and elegant design brings you the ultimate reading experience</p>
                 <div class="screenshot-grid">
                     <div class="screenshot">
-                        <h3 style="color: white; margin-bottom: 10px;">主界面</h3>
-                        <p style="color: rgba(255,255,255,0.8);">清晰的图书管理界面</p>
+                        <h3 style="color: white; margin-bottom: 10px;" data-key="screenshot1-title">Main Interface</h3>
+                        <p style="color: rgba(255,255,255,0.8);" data-key="screenshot1-desc">Clear book management interface</p>
                     </div>
                     <div class="screenshot">
-                        <h3 style="color: white; margin-bottom: 10px;">AI朗读</h3>
-                        <p style="color: rgba(255,255,255,0.8);">智能语音朗读控制</p>
+                        <h3 style="color: white; margin-bottom: 10px;" data-key="screenshot2-title">AI Reading</h3>
+                        <p style="color: rgba(255,255,255,0.8);" data-key="screenshot2-desc">Intelligent voice reading control</p>
                     </div>
                     <div class="screenshot">
-                        <h3 style="color: white; margin-bottom: 10px;">任务中心</h3>
-                        <p style="color: rgba(255,255,255,0.8);">丰富的任务和奖励系统</p>
+                        <h3 style="color: white; margin-bottom: 10px;" data-key="screenshot3-title">Mission Center</h3>
+                        <p style="color: rgba(255,255,255,0.8);" data-key="screenshot3-desc">Rich missions and reward system</p>
                     </div>
                 </div>
             </div>
@@ -394,146 +392,182 @@
         <!-- 下载区域 -->
         <section class="download">
             <div class="container">
-                <h2>立即开始阅读之旅</h2>
-                <p>下载BookReader，开启你的智能阅读新体验</p>
+                <h2 data-key="download-title">Start Your Reading Journey Now</h2>
+                <p data-key="download-subtitle">Download YouRe and start your smart reading experience</p>
                 <div class="download-buttons">
-                    <a href="#" class="download-btn">📱 App Store下载</a>
-                    <a href="#" class="download-btn">🤖 Google Play下载</a>
+                    <a href="#" class="download-btn" data-key="download-ios">📱 Download on App Store</a>
+                    <a href="#" class="download-btn" data-key="download-android">🤖 Download on Google Play</a>
                 </div>
             </div>
         </section>
     </div>
 
-    <!-- 服务条款页面 -->
-    <div id="terms-section" class="terms-section">
-        <div class="container">
-            <div class="terms-content">
-                <h1>BookReader 服务条款</h1>
-                
-                <p><strong>最后更新时间：</strong>2024年12月</p>
-                
-                <h2>1. 服务条款的接受</h2>
-                <p>欢迎使用BookReader应用程序（以下简称"本应用"或"服务"）。通过下载、安装或使用本应用，您同意遵守并受本服务条款约束。如果您不同意这些条款，请不要使用本服务。</p>
-
-                <h2>2. 服务描述</h2>
-                <p>BookReader是一款智能书籍阅读器应用，提供以下主要功能：</p>
-                <ul>
-                    <li>AI智能朗读功能</li>
-                    <li>个人图书库管理</li>
-                    <li>任务系统和金币奖励</li>
-                    <li>跨平台数据同步</li>
-                    <li>阅读进度追踪</li>
-                    <li>成就系统</li>
-                </ul>
-
-                <h2>3. 用户账户</h2>
-                <p>为使用某些功能，您可能需要创建账户。您有责任：</p>
-                <ul>
-                    <li>提供准确、完整的注册信息</li>
-                    <li>保护账户密码的安全</li>
-                    <li>对您账户下的所有活动负责</li>
-                    <li>及时通知我们任何未经授权的账户使用</li>
-                </ul>
-
-                <h2>4. 用户行为规范</h2>
-                <p>使用本服务时，您同意：</p>
-                <ul>
-                    <li>不上传、分享违法、有害或侵犯他人权利的内容</li>
-                    <li>不尝试破解、逆向工程或干扰应用功能</li>
-                    <li>不进行任何可能损害服务或其他用户体验的行为</li>
-                    <li>遵守适用的法律法规</li>
-                </ul>
-
-                <h2>5. 知识产权</h2>
-                <p>本应用及其所有内容（包括但不限于软件、图形、文本、图像）均受知识产权法保护。除非明确授权，您不得：</p>
-                <ul>
-                    <li>复制、修改、分发应用或其内容</li>
-                    <li>对应用进行反向工程</li>
-                    <li>移除或修改任何版权声明</li>
-                </ul>
-
-                <h2>6. 隐私保护</h2>
-                <p>我们重视您的隐私保护。我们收集和使用您的信息仅用于：</p>
-                <ul>
-                    <li>提供和改善服务</li>
-                    <li>同步您的阅读数据</li>
-                    <li>发送服务相关通知</li>
-                    <li>统计分析以优化用户体验</li>
-                </ul>
-                <p>我们不会向第三方出售您的个人信息。</p>
-
-                <h2>7. 金币和虚拟物品</h2>
-                <p>应用内的金币系统：</p>
-                <ul>
-                    <li>金币仅可在应用内使用，无现金价值</li>
-                    <li>金币不可转让或兑换为现金</li>
-                    <li>我们保留调整金币获取和使用规则的权利</li>
-                    <li>账户删除时，所有金币将被清除</li>
-                </ul>
-
-                <h2>8. 服务的修改和终止</h2>
-                <p>我们保留随时修改、暂停或终止服务的权利，包括：</p>
-                <ul>
-                    <li>增加、修改或移除功能</li>
-                    <li>因维护需要暂停服务</li>
-                    <li>因技术或商业原因终止服务</li>
-                </ul>
-                <p>我们将尽力提前通知重大变更。</p>
-
-                <h2>9. 免责声明</h2>
-                <p>本服务按"现状"提供，我们不保证：</p>
-                <ul>
-                    <li>服务将不间断或无错误</li>
-                    <li>所有缺陷都将被修复</li>
-                    <li>服务满足您的特定需求</li>
-                </ul>
-                <p>您使用本服务的风险由您自行承担。</p>
-
-                <h2>10. 责任限制</h2>
-                <p>在法律允许的最大范围内，我们的责任限于：</p>
-                <ul>
-                    <li>不承担因使用或无法使用服务而产生的任何间接损失</li>
-                    <li>总责任不超过您在过去12个月内支付给我们的费用</li>
-                </ul>
-
-                <h2>11. 争议解决</h2>
-                <p>因本服务条款产生的争议，双方应友好协商解决。协商不成的，提交有管辖权的人民法院解决。</p>
-
-                <h2>12. 条款修改</h2>
-                <p>我们可能会不时修改这些服务条款。修改后的条款将在应用内发布，继续使用服务即视为接受修改后的条款。</p>
-
-                <h2>13. 联系我们</h2>
-                <p>如果您对这些服务条款有任何疑问，请通过以下方式联系我们：</p>
-                <ul>
-                    <li>邮箱：support@bookreader.app（示例邮箱）</li>
-                    <li>在线客服：通过应用内反馈功能</li>
-                </ul>
-
-                <p><em>本服务条款自发布之日起生效。</em></p>
-            </div>
-        </div>
-    </div>
-
     <!-- 页脚 -->
     <footer class="footer">
         <div class="container">
-            <p>&copy; 2024 BookReader. 保留所有权利。</p>
-            <p>让阅读成为一种享受 📚</p>
+            <p data-key="footer-copyright">YGY corporation 2025</p>
+            <p data-key="footer-slogan">Make reading an enjoyment 📚</p>
         </div>
     </footer>
 
     <script>
-        function showHome() {
-            document.getElementById('home-section').style.display = 'block';
-            document.getElementById('terms-section').style.display = 'none';
-            document.title = 'BookReader - 智能书籍阅读器';
+        // 多语言内容
+        const translations = {
+            zh: {
+                'nav-home': '首页',
+                'nav-terms': '服务条款',
+                'hero-subtitle': '智能AI朗读，沉浸式阅读体验，让阅读变得更有趣',
+                'hero-cta': '探索功能',
+                'features-title': '强大功能，精彩体验',
+                'feature1-title': 'AI智能朗读',
+                'feature1-desc': '先进的AI语音技术，提供自然流畅的朗读体验，支持多种语音风格，让你的书籍"活"起来',
+                'feature2-title': '任务系统',
+                'feature2-desc': '完成阅读任务获得金币奖励，包括创建图书、体验AI朗读、收藏书籍等多种有趣任务',
+                'feature3-title': '父母专属录音',
+                'feature3-desc': '父母可以录制专属声音为孩子朗读故事，让孩子随时都能听到爸爸妈妈的声音，解放家长时间',
+                'feature4-title': '成就系统',
+                'feature4-desc': '连续登录奖励、阅读达人徽章，多种成就等你解锁，让阅读更有动力',
+                'feature5-title': '个人图书馆',
+                'feature5-desc': '创建并管理你的专属图书收藏，支持多种格式，打造专属的数字图书馆',
+                'feature6-title': '沉浸体验',
+                'feature6-desc': '精美的界面设计，流畅的阅读体验，专注模式让你完全沉浸在阅读的世界中',
+                'screenshots-title': '精美界面设计',
+                'screenshots-subtitle': '简洁优雅的设计，为你带来极致的阅读体验',
+                'screenshot1-title': '主界面',
+                'screenshot1-desc': '清晰的图书管理界面',
+                'screenshot2-title': 'AI朗读',
+                'screenshot2-desc': '智能语音朗读控制',
+                'screenshot3-title': '任务中心',
+                'screenshot3-desc': '丰富的任务和奖励系统',
+                'download-title': '立即开始阅读之旅',
+                'download-subtitle': '下载YouRe，开启你的智能阅读新体验',
+                'download-ios': '📱 App Store下载',
+                'download-android': '🤖 Google Play下载',
+                'footer-copyright': 'YGY corporation 2025',
+                'footer-slogan': '让阅读成为一种享受 📚',
+                'page-title': 'YouRe - 智能书籍阅读器'
+            },
+            en: {
+                'nav-home': 'Home',
+                'nav-terms': 'Terms of Service',
+                'hero-subtitle': 'Intelligent AI narration, immersive reading experience, making reading more enjoyable',
+                'hero-cta': 'Explore Features',
+                'features-title': 'Powerful Features, Amazing Experience',
+                'feature1-title': 'AI Smart Reading',
+                'feature1-desc': 'Advanced AI voice technology provides natural and smooth reading experience with multiple voice styles, bringing your books to life',
+                'feature2-title': 'Mission System',
+                'feature2-desc': 'Complete reading tasks to earn coin rewards, including creating books, experiencing AI reading, collecting books and other interesting tasks',
+                'feature3-title': 'Parent Voice Recording',
+                'feature3-desc': 'Parents can record their own voice to read stories for children, letting kids hear mom and dad anytime, freeing up parents\' time',
+                'feature4-title': 'Achievement System',
+                'feature4-desc': 'Daily login rewards, reading master badges, unlock various achievements to make reading more motivating',
+                'feature5-title': 'Personal Library',
+                'feature5-desc': 'Create and manage your exclusive book collection, support multiple formats, build your own digital library',
+                'feature6-title': 'Immersive Experience',
+                'feature6-desc': 'Beautiful interface design, smooth reading experience, focus mode lets you completely immerse in the world of reading',
+                'screenshots-title': 'Beautiful Interface Design',
+                'screenshots-subtitle': 'Clean and elegant design brings you the ultimate reading experience',
+                'screenshot1-title': 'Main Interface',
+                'screenshot1-desc': 'Clear book management interface',
+                'screenshot2-title': 'AI Reading',
+                'screenshot2-desc': 'Intelligent voice reading control',
+                'screenshot3-title': 'Mission Center',
+                'screenshot3-desc': 'Rich missions and reward system',
+                'download-title': 'Start Your Reading Journey Now',
+                'download-subtitle': 'Download YouRe and start your smart reading experience',
+                'download-ios': '📱 Download on App Store',
+                'download-android': '🤖 Download on Google Play',
+                'footer-copyright': 'YGY corporation 2025',
+                'footer-slogan': 'Make reading an enjoyment 📚',
+                'page-title': 'YouRe - Smart Reading App'
+            },
+            ja: {
+                'nav-home': 'ホーム',
+                'nav-terms': '利用規約',
+                'hero-subtitle': 'インテリジェントAI音読、没入型読書体験で、読書をもっと楽しく',
+                'hero-cta': '機能を探索',
+                'features-title': '強力な機能、素晴らしい体験',
+                'feature1-title': 'AIスマート音読',
+                'feature1-desc': '先進的なAI音声技術により、自然で滑らかな音読体験を提供し、複数の音声スタイルをサポートして、あなたの本に命を吹き込みます',
+                'feature2-title': 'ミッションシステム',
+                'feature2-desc': '読書タスクを完了してコイン報酬を獲得。本の作成、AI音読体験、本のコレクションなど、様々な興味深いタスクがあります',
+                'feature3-title': '親の音声録音',
+                'feature3-desc': '両親が自分の声で子供のために物語を読み聞かせることができ、いつでもパパとママの声を聞けて、親の時間を解放します',
+                'feature4-title': '達成システム',
+                'feature4-desc': '連続ログイン報酬、読書マスターバッジ、様々な達成項目をアンロックして読書をもっとやる気にさせます',
+                'feature5-title': 'パーソナルライブラリ',
+                'feature5-desc': '専用の本のコレクションを作成・管理し、複数のフォーマットをサポートして、専用のデジタルライブラリを構築します',
+                'feature6-title': '没入体験',
+                'feature6-desc': '美しいインターフェースデザイン、スムーズな読書体験、集中モードで読書の世界に完全に没入できます',
+                'screenshots-title': '美しいインターフェースデザイン',
+                'screenshots-subtitle': 'シンプルでエレガントなデザインが、最高の読書体験をお届けします',
+                'screenshot1-title': 'メインインターフェース',
+                'screenshot1-desc': 'クリアな本管理インターフェース',
+                'screenshot2-title': 'AI音読',
+                'screenshot2-desc': 'インテリジェント音声読み上げ制御',
+                'screenshot3-title': 'ミッションセンター',
+                'screenshot3-desc': '豊富なミッションと報酬システム',
+                'download-title': '今すぐ読書の旅を始めよう',
+                'download-subtitle': 'YouReをダウンロードして、スマート読書体験を始めましょう',
+                'download-ios': '📱 App Storeでダウンロード',
+                'download-android': '🤖 Google Playでダウンロード',
+                'footer-copyright': 'YGY corporation 2025',
+                'footer-slogan': '読書を楽しみにしよう 📚',
+                'page-title': 'YouRe - スマート読書アプリ'
+            }
+        };
+
+        let currentLanguage = 'en';
+
+        function changeLanguage(lang) {
+            currentLanguage = lang;
+            
+            // 更新按钮状态
+            document.querySelectorAll('.language-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // 更新页面内容
+            updatePageContent();
+            
+            // 保存语言设置
+            localStorage.setItem('language', lang);
         }
 
-        function showTerms() {
-            document.getElementById('home-section').style.display = 'none';
-            document.getElementById('terms-section').style.display = 'block';
-            document.title = 'BookReader - 服务条款';
+        function updatePageContent() {
+            const translation = translations[currentLanguage];
+            
+            // 更新所有带有data-key的元素
+            document.querySelectorAll('[data-key]').forEach(element => {
+                const key = element.getAttribute('data-key');
+                if (translation[key]) {
+                    element.textContent = translation[key];
+                }
+            });
+            
+            // 更新页面标题
+            document.title = translation['page-title'];
         }
+
+
+
+        // 页面加载时初始化语言
+        window.addEventListener('DOMContentLoaded', function() {
+            // 从本地存储获取语言设置
+            const savedLanguage = localStorage.getItem('language') || 'en';
+            
+            // 设置对应的按钮为活跃状态
+            document.querySelectorAll('.language-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent.includes('中文') && savedLanguage === 'zh') btn.classList.add('active');
+                if (btn.textContent.includes('English') && savedLanguage === 'en') btn.classList.add('active');
+                if (btn.textContent.includes('日本語') && savedLanguage === 'ja') btn.classList.add('active');
+            });
+            
+            currentLanguage = savedLanguage;
+            updatePageContent();
+        });
 
         // 平滑滚动
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
