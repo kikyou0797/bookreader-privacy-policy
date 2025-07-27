@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouRe - Terms of Service</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa; /* A light grey background for the whole page */
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        /* Navbar styles from privacy/index.html */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #4B39EF;
+        }
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        .nav-links a:hover {
+            color: #4B39EF;
+        }
+        .nav-links a.active-nav-link {
+            color: #4B39EF;
+            font-weight: bold;
+        }
+        .language-selector {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .language-btn {
+            background: none;
+            border: 1px solid #ddd;
+            padding: 5px 10px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s ease;
+            color: #333;
+        }
+        .language-btn:hover, .language-btn.active {
+            background: #4B39EF;
+            color: white;
+            border-color: #4B39EF;
+        }
+        /* Main content area */
+        .main-content {
+            margin-top: 80px; /* Space for fixed navbar */
+            background: white;
+            padding: 60px 0;
+        }
+        /* Terms content styling */
+        .terms-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .terms-container h1 {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .terms-container h2 {
+            font-size: 1.8rem;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+        .terms-container p, .terms-container li {
+            color: #555;
+            line-height: 1.8;
+        }
+        .terms-container ul {
+            padding-left: 20px;
+        }
+        .terms-container .placeholder {
+            color: #d9534f;
+            font-weight: bold;
+        }
+        /* Footer styles from privacy/index.html */
+        .footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 40px 0;
+        }
+        @media (max-width: 768px) {
+            .nav-links { gap: 15px; }
+            .terms-container h1 { font-size: 2rem; }
+            .terms-container h2 { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-content">
+                <div class="logo">📚 YouRe</div>
+                <div class="nav-links">
+                    <a href="../privacy/index.html" data-key="nav-home">Home</a>
+                    <a href="#" class="active-nav-link" data-key="nav-terms">Terms of Service</a>
+                    <div class="language-selector">
+                        <button class="language-btn" onclick="changeLanguage('zh')">中文</button>
+                        <button class="language-btn active" onclick="changeLanguage('en')">English</button>
+                        <button class="language-btn" onclick="changeLanguage('ja')">日本語</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="terms-container">
+            <h1>Terms and Conditions (EULA)</h1>
+            <p><em>Last updated: <span class="placeholder">2025-01-01</span></em></p>
+            <p>Please read these Terms and Conditions ("Terms", "Terms and Conditions", "EULA") carefully before using the <span class="placeholder">YouRe</span> mobile application (the "Service") operated by <span class="placeholder">YGY LABS</span> ("us", "we", or "our").</p>
+            <p>Your access to and use of the Service is conditioned on your acceptance of and compliance with these Terms. These Terms apply to all visitors, users, and others who access or use the Service.</p>
+            <p>By accessing or using the Service you agree to be bound by these Terms. If you disagree with any part of the terms then you may not access the Service.</p>
+            
+            <h2>1. License</h2>
+            <p>Subject to your compliance with these Terms, we grant you a revocable, non-exclusive, non-transferable, limited license to download, install, and use the application solely for your personal, non-commercial purposes strictly in accordance with these Terms.</p>
+            <p>You agree not to, and you will not permit others to license, sell, rent, lease, assign, distribute, transmit, host, outsource, disclose, or otherwise commercially exploit the Service or make the Service available to any third party.</p>
+            
+            <h2>2. Account Registration</h2>
+            <p>To use certain features of our Service, you may be required to create an account. You must provide information that is accurate, complete, and current at all times. Failure to do so constitutes a breach of the Terms, which may result in immediate termination of your account on our Service.</p>
+            <p>You are responsible for safeguarding the password that you use to access the Service and for any activities or actions under your password. You agree not to disclose your password to any third party. You must notify us immediately upon becoming aware of any breach of security or unauthorized use of your account.</p>
+
+            <h2>3. Intellectual Property</h2>
+            <p>The Service and its original content (excluding content provided by users), features, and functionality are and will remain the exclusive property of <span class="placeholder">YGY LABS</span> and its licensors. The Service is protected by copyright, trademark, and other laws of both <span class="placeholder">[请填写您的国家]</span> and foreign countries.</p>
+
+            <h2>4. User-Generated Content</h2>
+            <p>Our Service may allow you to post, link, store, share and otherwise make available certain information, text, graphics, videos, or other material ("Content"). You are responsible for the Content that you post on or through the Service, including its legality, reliability, and appropriateness.</p>
+            <p>By posting Content, you grant us the right and license to use, modify, publicly perform, publicly display, reproduce, and distribute such Content on and through the Service. You retain any and all of your rights to any Content you submit and you are responsible for protecting those rights.</p>
+            <p>We reserve the right, but not the obligation, to monitor and edit all Content provided by users.</p>
+
+            <h2>5. Prohibited Uses</h2>
+            <p>You agree not to use the Service:</p>
+            <ul>
+                <li>In any way that violates any applicable national or international law or regulation.</li>
+                <li>For the purpose of exploiting, harming, or attempting to exploit or harm minors in any way.</li>
+                <li>To transmit, or procure the sending of, any advertising or promotional material, including any "junk mail", "chain letter," "spam," or any other similar solicitation.</li>
+                <li>To impersonate or attempt to impersonate the Company, a Company employee, another user, or any other person or entity.</li>
+                <li>To engage in any other conduct that restricts or inhibits anyone's use or enjoyment of the Service, or which, as determined by us, may harm the Company or users of the Service or expose them to liability.</li>
+            </ul>
+
+            <h2>6. Subscriptions and Payments</h2>
+            <p>Some parts of the Service are billed on a subscription basis ("Subscription(s)"). You will be billed in advance on a recurring and periodic basis ("Billing Cycle").</p>
+            <p>At the end of each Billing Cycle, your Subscription will automatically renew under the exact same conditions unless you cancel it or we cancel it. You may cancel your Subscription renewal either through your online account management page or by contacting our customer support team.</p>
+            <p>All subscription payments made through the Apple App Store are subject to Apple's terms and conditions.</p>
+
+            <h2>7. Termination</h2>
+            <p>We may terminate or suspend your account and bar access to the Service immediately, without prior notice or liability, under our sole discretion, for any reason whatsoever and without limitation, including but not limited to a breach of the Terms.</p>
+            <p>If you wish to terminate your account, you may simply discontinue using the Service or request account deletion where applicable.</p>
+
+            <h2>8. Limitation of Liability</h2>
+            <p>In no event shall <span class="placeholder">YGY LABS</span>, nor its directors, employees, partners, agents, suppliers, or affiliates, be liable for any indirect, incidental, special, consequential or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from your access to or use of or inability to access or use the Service.</p>
+
+            <h2>9. Disclaimer</h2>
+            <p>Your use of the Service is at your sole risk. The Service is provided on an "AS IS" and "AS AVAILABLE" basis. The Service is provided without warranties of any kind, whether express or implied, including, but not limited to, implied warranties of merchantability, fitness for a particular purpose, non-infringement or course of performance.</p>
+
+            <h2>10. Governing Law</h2>
+            <p>These Terms shall be governed and construed in accordance with the laws of <span class="placeholder">Japan</span>, without regard to its conflict of law provisions.</p>
+            
+            <h2>11. Changes to These Terms</h2>
+            <p>We reserve the right, at our sole discretion, to modify or replace these Terms at any time. If a revision is material we will provide at least 30 days' notice prior to any new terms taking effect. What constitutes a material change will be determined at our sole discretion.</p>
+            <p>By continuing to access or use our Service after any revisions become effective, you agree to be bound by the revised terms. If you do not agree to the new terms, you are no longer authorized to use the Service.</p>
+
+            <h2>12. Contact Us</h2>
+            <p>If you have any questions about these Terms, please contact us:</p>
+            <ul>
+                <li>By email: <span class="placeholder">contact@ygylabs.com</span></li>
+            </ul>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p data-key="footer-copyright">YGY LABS 2025</p>
+            <p data-key="footer-slogan">Make reading an enjoyment 📚</p>
+        </div>
+    </footer>
+
+    <script>
+        // NOTE: The language switching will only affect the footer.
+        // The main terms content is in English only.
+        const translations = {
+            zh: {
+                'nav-home': '首页',
+                'nav-terms': '服务条款',
+                'footer-copyright': 'YGY LABS 2025',
+                'footer-slogan': '让阅读成为一种享受 📚',
+            },
+            en: {
+                'nav-home': 'Home',
+                'nav-terms': 'Terms of Service',
+                'footer-copyright': 'YGY LABS 2025',
+                'footer-slogan': 'Make reading an enjoyment 📚',
+            },
+            ja: {
+                'nav-home': 'ホーム',
+                'nav-terms': '利用規約',
+                'footer-copyright': 'YGY LABS 2025',
+                'footer-slogan': '読書を楽しみにしよう 📚',
+            }
+        };
+
+        let currentLanguage = 'en';
+
+        function changeLanguage(lang) {
+            currentLanguage = lang;
+            document.querySelectorAll('.language-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            updatePageContent();
+            localStorage.setItem('language', lang);
+        }
+
+        function updatePageContent() {
+            const translation = translations[currentLanguage];
+            document.querySelectorAll('[data-key]').forEach(element => {
+                const key = element.getAttribute('data-key');
+                if (translation[key]) {
+                    element.textContent = translation[key];
+                }
+            });
+            document.title = "YouRe - " + (translation['nav-terms'] || 'Terms of Service');
+        }
+
+        window.addEventListener('DOMContentLoaded', function() {
+            const savedLanguage = localStorage.getItem('language') || 'en';
+            const btnMap = { 'zh': '中文', 'en': 'English', 'ja': '日本語' };
+            document.querySelectorAll('.language-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent.includes(btnMap[savedLanguage])) {
+                    btn.classList.add('active');
+                }
+            });
+            currentLanguage = savedLanguage;
+            updatePageContent();
+        });
+    </script>
+</body>
+</html> 
