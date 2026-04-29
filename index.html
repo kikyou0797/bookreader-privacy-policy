@@ -1,598 +1,2183 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YouRe - Smart Reading App</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>YouRe — Your child's story, always there.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;600;700&family=Noto+Sans+KR:wght@400;600;700&family=Noto+Sans+SC:wght@400;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg-dark: #08080F;
+    --bg-cream: #F7F3EE;
+    --card-dark: #111120;
+    --accent-orange: #FF8C42;
+    --accent-orange-soft: #FFAA6B;
+    --accent-purple: #7B61FF;
+    --accent-purple-soft: #9B85FF;
+    --text-dark: #1A1A2E;
+    --text-light: #FFFFFF;
+    --text-light-muted: #A0A0B0;
+    --text-dark-muted: #5C5C6E;
+    --border-light: rgba(26, 26, 46, 0.08);
+    --border-dark: rgba(255, 255, 255, 0.08);
+  }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: linear-gradient(135deg, #4B39EF 0%, #FF5963 50%, #EE8B60 100%);
-        }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
+  html { scroll-behavior: smooth; }
 
-        /* 导航栏 */
-        .navbar {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 15px 0;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
-        }
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg-dark);
+    color: var(--text-light);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    line-height: 1.7;
+  }
 
-        .nav-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+  body[data-lang="zh"], body[data-lang="zh"] * { font-family: 'Inter', 'Noto Sans SC', sans-serif; }
+  body[data-lang="ja"], body[data-lang="ja"] * { font-family: 'Inter', 'Noto Sans JP', sans-serif; }
+  body[data-lang="ko"], body[data-lang="ko"] * { font-family: 'Inter', 'Noto Sans KR', sans-serif; }
 
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-            color: #4B39EF;
-        }
+  img, svg { display: block; max-width: 100%; }
 
-        .nav-links {
-            display: flex;
-            gap: 30px;
-        }
+  /* ───────── Nav ───────── */
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 18px 40px;
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(8, 8, 15, 0.5);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s ease, background 0.3s ease;
+  }
+  .nav.scrolled {
+    background: rgba(8, 8, 15, 0.8);
+    border-bottom-color: var(--border-dark);
+  }
+  .nav-brand {
+    font-size: 22px; font-weight: 700; letter-spacing: -0.5px;
+    color: var(--text-light);
+    display: flex; align-items: center; gap: 4px;
+  }
+  .nav-brand .dot {
+    width: 7px; height: 7px;
+    background: var(--accent-orange);
+    border-radius: 50%;
+    margin-left: 2px;
+    box-shadow: 0 0 12px rgba(255, 140, 66, 0.6);
+  }
+  .nav-right { display: flex; align-items: center; gap: 28px; }
+  .nav-links { display: flex; gap: 20px; align-items: center; }
+  .nav-link {
+    color: var(--text-light-muted);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    transition: color 200ms ease;
+  }
+  .nav-link:hover { color: var(--text-light); }
+  @media (max-width: 980px) { .nav-links { display: none; } }
+  .lang-switcher {
+    display: flex; gap: 4px;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 4px;
+    border-radius: 999px;
+    border: 1px solid var(--border-dark);
+  }
+  .lang-btn {
+    background: transparent; border: none;
+    color: var(--text-light-muted);
+    padding: 7px 14px;
+    font-size: 13px; font-weight: 500;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: all 200ms ease;
+    font-family: inherit;
+  }
+  .lang-btn:hover { color: var(--text-light); }
+  .lang-btn.active {
+    background: var(--accent-orange);
+    color: white;
+    box-shadow: 0 4px 14px rgba(255, 140, 66, 0.4);
+  }
+  .nav-cta {
+    background: var(--accent-orange);
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    font-size: 14px; font-weight: 600;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: all 200ms ease;
+    font-family: inherit;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .nav-cta:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px rgba(255, 140, 66, 0.45);
+  }
 
-        .nav-links a {
-            text-decoration: none;
-            color: #333;
-            font-weight: 500;
-            transition: color 0.3s ease;
-        }
+  /* ───────── Buttons ───────── */
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 16px 30px;
+    font-size: 16px; font-weight: 600;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: all 220ms ease;
+    text-decoration: none;
+    font-family: inherit;
+    border: 1px solid transparent;
+  }
+  .btn-primary {
+    background: var(--accent-orange);
+    color: white;
+    box-shadow: 0 8px 24px rgba(255, 140, 66, 0.35);
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 36px rgba(255, 140, 66, 0.55);
+  }
+  .btn-ghost {
+    background: rgba(255, 255, 255, 0.06);
+    color: white;
+    border-color: var(--border-dark);
+  }
+  .btn-ghost:hover {
+    background: rgba(255, 255, 255, 0.12);
+    transform: translateY(-2px);
+  }
 
-        .nav-links a:hover {
-            color: #4B39EF;
-        }
+  /* ───────── HERO ───────── */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    padding: 140px 24px 80px;
+    overflow: hidden;
+    display: flex; flex-direction: column; align-items: center;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    will-change: transform;
+  }
+  .orb-orange {
+    width: 620px; height: 620px;
+    background: radial-gradient(circle, rgba(255, 140, 66, 0.5) 0%, transparent 70%);
+    top: -120px; left: -160px;
+    opacity: 0.6;
+    animation: drift1 12s ease-in-out infinite;
+  }
+  .orb-purple {
+    width: 720px; height: 720px;
+    background: radial-gradient(circle, rgba(123, 97, 255, 0.45) 0%, transparent 70%);
+    bottom: -200px; right: -200px;
+    opacity: 0.5;
+    animation: drift2 14s ease-in-out infinite;
+  }
+  @keyframes drift1 {
+    0%, 100% { transform: translate(0, 0) scale(0.95); }
+    50% { transform: translate(40px, 30px) scale(1.05); }
+  }
+  @keyframes drift2 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(-30px, -40px) scale(1.07); }
+  }
+  .grid-overlay {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+    background-size: 60px 60px;
+    opacity: 0.3;
+    mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+  }
 
-        /* 主页面 */
-        .main-content {
-            margin-top: 80px;
-        }
+  .hero-content {
+    position: relative; z-index: 1;
+    max-width: 900px;
+    text-align: center;
+    margin-bottom: 70px;
+  }
+  .overline {
+    display: inline-block;
+    font-size: 12px; font-weight: 600;
+    letter-spacing: 4px;
+    color: var(--accent-purple-soft);
+    text-transform: uppercase;
+    margin-bottom: 30px;
+    padding: 8px 16px;
+    background: rgba(123, 97, 255, 0.1);
+    border: 1px solid rgba(123, 97, 255, 0.3);
+    border-radius: 999px;
+  }
+  .hero h1 {
+    font-size: clamp(44px, 7.2vw, 88px);
+    font-weight: 700;
+    letter-spacing: -2px;
+    line-height: 1.05;
+    margin-bottom: 28px;
+  }
+  .hero h1 .accent {
+    background: linear-gradient(135deg, var(--accent-orange) 0%, var(--accent-orange-soft) 50%, #FFD9B8 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    display: block;
+  }
+  .hero-sub {
+    font-size: clamp(16px, 1.4vw, 20px);
+    color: var(--text-light-muted);
+    max-width: 620px;
+    margin: 0 auto 40px;
+    line-height: 1.6;
+  }
+  .hero-buttons {
+    display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;
+  }
 
-        /* Hero Section */
-        .hero {
-            text-align: center;
-            padding: 100px 0;
-            color: white;
-        }
+  /* ───────── Phone mockup ───────── */
+  .phone-wrap {
+    position: relative; z-index: 1;
+    animation: float 4s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(-10px); }
+    50% { transform: translateY(10px); }
+  }
+  .phone {
+    width: 320px; height: 640px;
+    background: linear-gradient(145deg, #1a1a2a 0%, #0c0c14 100%);
+    border-radius: 50px;
+    padding: 14px;
+    box-shadow:
+      0 0 0 2px rgba(255, 255, 255, 0.06),
+      0 40px 80px rgba(123, 97, 255, 0.2),
+      0 80px 160px rgba(255, 140, 66, 0.12),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+    position: relative;
+  }
+  .phone::before {
+    content: '';
+    position: absolute;
+    top: 22px; left: 50%;
+    transform: translateX(-50%);
+    width: 110px; height: 30px;
+    background: #000;
+    border-radius: 999px;
+    z-index: 3;
+  }
+  .phone-screen {
+    width: 100%; height: 100%;
+    background: linear-gradient(180deg, #1c1426 0%, #0e0a18 100%);
+    border-radius: 38px;
+    overflow: hidden;
+    position: relative;
+    display: flex; flex-direction: column;
+  }
+  .phone-status {
+    padding: 18px 28px 8px;
+    display: flex; justify-content: space-between;
+    font-size: 11px; font-weight: 600;
+    color: white;
+    z-index: 4; position: relative;
+  }
+  .book-page {
+    margin: 60px 28px 24px;
+    aspect-ratio: 3/4;
+    background: linear-gradient(180deg, #f8eed8 0%, #e9d8b3 100%);
+    border-radius: 14px;
+    padding: 22px 18px;
+    position: relative;
+    overflow: hidden;
+    box-shadow:
+      inset 0 0 0 1px rgba(0, 0, 0, 0.06),
+      0 8px 24px rgba(0, 0, 0, 0.5);
+  }
+  .book-illustration {
+    width: 100%; height: 55%;
+    background:
+      radial-gradient(circle at 30% 40%, #ffd28a 0%, transparent 40%),
+      radial-gradient(circle at 70% 50%, #b890ff 0%, transparent 45%),
+      linear-gradient(180deg, #c5e1ff 0%, #fde4b8 100%);
+    border-radius: 8px;
+    margin-bottom: 14px;
+    position: relative;
+  }
+  .book-illustration::before {
+    /* sun/moon */
+    content: '';
+    position: absolute;
+    top: 14%; right: 18%;
+    width: 28px; height: 28px;
+    background: radial-gradient(circle, #fff5d6 0%, #ffc46b 70%);
+    border-radius: 50%;
+    box-shadow: 0 0 20px rgba(255, 196, 107, 0.7);
+  }
+  .book-illustration::after {
+    /* hill */
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 35%;
+    background: linear-gradient(180deg, #6f9c5f 0%, #4a7340 100%);
+    border-radius: 50% 50% 0 0 / 80% 80% 0 0;
+  }
+  .book-line {
+    height: 6px;
+    background: rgba(60, 40, 20, 0.25);
+    border-radius: 3px;
+    margin-bottom: 8px;
+  }
+  .book-line.short { width: 70%; }
+  .book-line.medium { width: 90%; }
 
-        .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 20px;
-            font-weight: 700;
-        }
+  .scan-line {
+    position: absolute;
+    left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, transparent, var(--accent-orange) 50%, transparent);
+    box-shadow:
+      0 0 18px var(--accent-orange),
+      0 0 36px rgba(255, 140, 66, 0.6);
+    animation: scan 3.5s ease-in-out infinite;
+    z-index: 2;
+  }
+  @keyframes scan {
+    0% { top: 0; opacity: 0; }
+    8% { opacity: 1; }
+    50% { top: 100%; opacity: 1; }
+    58% { opacity: 0; }
+    100% { top: 0; opacity: 0; }
+  }
 
-        .hero p {
-            font-size: 1.3rem;
-            margin-bottom: 40px;
-            opacity: 0.9;
-        }
+  .player-card {
+    margin: 0 28px 28px;
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 14px 16px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .player-cover {
+    width: 40px; height: 40px;
+    background: linear-gradient(135deg, var(--accent-orange) 0%, var(--accent-purple) 100%);
+    border-radius: 8px;
+    flex-shrink: 0;
+    position: relative;
+  }
+  .player-cover::after {
+    content: '▶';
+    position: absolute;
+    inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    color: white;
+    font-size: 14px;
+  }
+  .player-info { flex: 1; min-width: 0; }
+  .player-title {
+    color: white; font-size: 11px; font-weight: 600;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .waveform {
+    display: flex; align-items: center; gap: 2px;
+    height: 14px; margin-top: 4px;
+  }
+  .waveform span {
+    flex: 1;
+    background: var(--accent-orange);
+    border-radius: 1px;
+    animation: wave 1.2s ease-in-out infinite;
+  }
+  .waveform span:nth-child(1) { animation-delay: 0s; }
+  .waveform span:nth-child(2) { animation-delay: 0.1s; }
+  .waveform span:nth-child(3) { animation-delay: 0.2s; }
+  .waveform span:nth-child(4) { animation-delay: 0.3s; }
+  .waveform span:nth-child(5) { animation-delay: 0.4s; }
+  .waveform span:nth-child(6) { animation-delay: 0.5s; }
+  .waveform span:nth-child(7) { animation-delay: 0.6s; }
+  .waveform span:nth-child(8) { animation-delay: 0.7s; }
+  .waveform span:nth-child(9) { animation-delay: 0.8s; }
+  .waveform span:nth-child(10) { animation-delay: 0.9s; }
+  .waveform span:nth-child(11) { animation-delay: 1s; }
+  .waveform span:nth-child(12) { animation-delay: 1.1s; }
+  @keyframes wave {
+    0%, 100% { height: 25%; opacity: 0.5; }
+    50% { height: 100%; opacity: 1; }
+  }
 
-        .cta-button {
-            display: inline-block;
-            background: linear-gradient(45deg, #4B39EF, #39D2C0);
-            color: white;
-            padding: 15px 40px;
-            text-decoration: none;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 1.1rem;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
+  /* ───────── Section base ───────── */
+  section { position: relative; }
+  .section-cream {
+    background: var(--bg-cream);
+    color: var(--text-dark);
+  }
+  .section-dark {
+    background: var(--bg-dark);
+    color: var(--text-light);
+  }
+  .container {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+  .section-pad {
+    padding: 140px 0;
+  }
+  .section-head {
+    text-align: center;
+    max-width: 760px;
+    margin: 0 auto 80px;
+  }
+  .section-head h2 {
+    font-size: clamp(34px, 4.5vw, 56px);
+    font-weight: 600;
+    letter-spacing: -1.5px;
+    line-height: 1.1;
+    margin-bottom: 20px;
+  }
+  .section-head p {
+    font-size: clamp(16px, 1.3vw, 20px);
+    color: var(--text-dark-muted);
+    line-height: 1.6;
+  }
+  .section-dark .section-head p { color: var(--text-light-muted); }
 
-        .cta-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(75, 57, 239, 0.4);
-        }
+  /* Reveal */
+  .reveal {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 700ms ease-out, transform 700ms ease-out;
+  }
+  .reveal.in {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal[data-stagger="1"] { transition-delay: 120ms; }
+  .reveal[data-stagger="2"] { transition-delay: 240ms; }
+  .reveal[data-stagger="3"] { transition-delay: 360ms; }
+  .reveal[data-stagger="4"] { transition-delay: 480ms; }
 
-        /* 功能特色区域 */
-        .features {
-            background: white;
-            padding: 80px 0;
-        }
+  /* ───────── Pain points ───────── */
+  .pain-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+  }
+  .pain-card {
+    background: white;
+    border-radius: 24px;
+    padding: 44px 36px;
+    box-shadow:
+      0 1px 2px rgba(26, 26, 46, 0.05),
+      0 12px 32px rgba(26, 26, 46, 0.06);
+    transition: all 220ms ease;
+    border: 1px solid var(--border-light);
+  }
+  .pain-card:hover {
+    transform: translateY(-6px);
+    box-shadow:
+      0 1px 2px rgba(26, 26, 46, 0.05),
+      0 24px 48px rgba(26, 26, 46, 0.12);
+  }
+  .pain-card { padding: 0; overflow: hidden; }
+  .pain-card-body { padding: 32px 32px 36px; }
+  .pain-illo {
+    width: 100%;
+    aspect-ratio: 16 / 11;
+    display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(160deg, #FFE6CF 0%, #FFC79A 60%, #FF9E5A 100%);
+    position: relative;
+    overflow: hidden;
+  }
+  .pain-illo svg { width: 100%; height: 100%; display: block; }
+  .pain-card:nth-child(2) .pain-illo { background: linear-gradient(160deg, #EFE6FF 0%, #C9B7FF 55%, #9B85FF 100%); }
+  .pain-card:nth-child(3) .pain-illo { background: linear-gradient(160deg, #1A1A40 0%, #2D2566 50%, #4A36B5 100%); }
+  /* soft glow on top of illos */
+  .pain-illo::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 30% 20%, rgba(255,255,255,0.5) 0%, transparent 55%);
+    pointer-events: none;
+  }
 
-        .features h2 {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 60px;
-            color: #333;
-        }
+  .pain-card h3 {
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.3px;
+    margin-bottom: 10px;
+  }
+  .pain-card p {
+    color: var(--text-dark-muted);
+    font-size: 16px;
+    line-height: 1.6;
+  }
 
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 40px;
-        }
+  /* ───────── Magic moment / 3 step ───────── */
+  .steps {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr auto 1fr;
+    gap: 24px;
+    align-items: center;
+    margin-bottom: 100px;
+  }
+  .step {
+    text-align: center;
+    padding: 32px 24px;
+  }
+  .step-icon {
+    width: 100px; height: 100px;
+    border-radius: 26px;
+    margin: 0 auto 24px;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border-dark);
+    position: relative;
+    transition: all 300ms ease;
+  }
+  .step-icon.glow-orange {
+    box-shadow: 0 0 60px rgba(255, 140, 66, 0.35);
+    border-color: rgba(255, 140, 66, 0.3);
+    background: radial-gradient(circle, rgba(255, 140, 66, 0.15) 0%, rgba(255, 140, 66, 0.04) 100%);
+  }
+  .step-icon.glow-purple {
+    box-shadow: 0 0 60px rgba(123, 97, 255, 0.35);
+    border-color: rgba(123, 97, 255, 0.3);
+    background: radial-gradient(circle, rgba(123, 97, 255, 0.15) 0%, rgba(123, 97, 255, 0.04) 100%);
+  }
+  .step h3 {
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+    margin-bottom: 8px;
+  }
+  .step p {
+    color: var(--text-light-muted);
+    font-size: 15px;
+  }
+  .arrow {
+    width: 80px; height: 2px;
+    background: linear-gradient(90deg, transparent 0%, var(--accent-orange) 50%, transparent 100%);
+    position: relative;
+    background-size: 200% 100%;
+    animation: arrow-flow 2s linear infinite;
+  }
+  .arrow::after {
+    content: '';
+    position: absolute;
+    right: 0; top: 50%;
+    width: 8px; height: 8px;
+    border-top: 2px solid var(--accent-orange);
+    border-right: 2px solid var(--accent-orange);
+    transform: translate(0, -50%) rotate(45deg);
+  }
+  @keyframes arrow-flow {
+    0% { background-position: 100% 0; }
+    100% { background-position: -100% 0; }
+  }
 
-        .feature-card {
-            text-align: center;
-            padding: 40px 30px;
-            border-radius: 20px;
-            background: linear-gradient(135deg, #f8f9ff 0%, #e8f4ff 100%);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
+  /* Page-to-wave morph */
+  .morph {
+    background: linear-gradient(135deg, rgba(255, 140, 66, 0.08), rgba(123, 97, 255, 0.08));
+    border: 1px solid var(--border-dark);
+    border-radius: 28px;
+    padding: 60px;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 40px;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+  }
+  .morph-page {
+    aspect-ratio: 3/4;
+    max-width: 220px;
+    margin-left: auto;
+    background: linear-gradient(180deg, #f8eed8 0%, #e9d8b3 100%);
+    border-radius: 14px;
+    padding: 16px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+    animation: morphPage 4s ease-in-out infinite;
+  }
+  .morph-page .book-illustration { height: 50%; }
+  .morph-arrow {
+    color: var(--accent-orange);
+    font-size: 28px;
+    animation: arrow-pulse 2s ease-in-out infinite;
+  }
+  @keyframes arrow-pulse {
+    0%, 100% { opacity: 0.6; transform: translateX(0); }
+    50% { opacity: 1; transform: translateX(8px); }
+  }
+  .morph-wave {
+    display: flex; align-items: center; gap: 4px;
+    height: 100px; max-width: 220px;
+  }
+  .morph-wave span {
+    flex: 1;
+    background: linear-gradient(180deg, var(--accent-orange) 0%, var(--accent-purple) 100%);
+    border-radius: 4px;
+    animation: morphWave 1.4s ease-in-out infinite;
+  }
+  @keyframes morphWave {
+    0%, 100% { height: 20%; }
+    50% { height: 100%; }
+  }
+  @keyframes morphPage {
+    0%, 100% { transform: rotate(-2deg); }
+    50% { transform: rotate(2deg); }
+  }
 
-        .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(75, 57, 239, 0.15);
-        }
+  /* ───────── Feature cards ───────── */
+  .feature {
+    padding: 120px 0;
+    overflow: hidden;
+  }
+  .feature-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+  .feature-inner.reverse {
+    grid-template-columns: 1fr 1fr;
+  }
+  .feature-text .eyebrow {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+    color: var(--accent-orange);
+  }
+  .feature.section-cream .feature-text .eyebrow { color: var(--accent-purple); }
+  .feature-text h3 {
+    font-size: clamp(32px, 3.5vw, 48px);
+    font-weight: 600;
+    letter-spacing: -1px;
+    line-height: 1.1;
+    margin-bottom: 24px;
+  }
+  .feature-text p {
+    font-size: 18px;
+    line-height: 1.7;
+    color: var(--text-light-muted);
+    margin-bottom: 28px;
+  }
+  .feature.section-cream .feature-text p { color: var(--text-dark-muted); }
+  .chips { display: flex; gap: 8px; flex-wrap: wrap; }
+  .chip {
+    padding: 8px 14px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--border-dark);
+    border-radius: 999px;
+    font-size: 13px; font-weight: 500;
+    color: var(--text-light);
+  }
+  .feature.section-cream .chip {
+    background: rgba(26, 26, 46, 0.04);
+    border-color: var(--border-light);
+    color: var(--text-dark);
+  }
+  .feature-text .small-note {
+    font-size: 13px;
+    color: var(--accent-purple);
+    font-weight: 500;
+    margin-top: 8px;
+  }
 
-        .feature-icon {
-            font-size: 3rem;
-            margin-bottom: 20px;
-        }
+  /* Visual A — floating book with sound waves */
+  .vis-book {
+    position: relative;
+    aspect-ratio: 1;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .vis-book-img {
+    width: 80%; max-width: 360px;
+    border-radius: 16px;
+    box-shadow: 0 30px 80px rgba(255,140,66,0.35);
+    animation: float 4s ease-in-out infinite;
+    position: relative; z-index: 2;
+  }
+  .vis-book-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 2px solid rgba(255,140,66,0.55);
+    opacity: 0;
+    animation: book-ring 3s ease-out infinite;
+    z-index: 1;
+  }
+  .vis-book-ring:nth-child(1) { width: 62%; height: 62%; animation-delay: 0s; }
+  .vis-book-ring:nth-child(2) { width: 75%; height: 75%; animation-delay: 1s; }
+  .vis-book-ring:nth-child(3) { width: 90%; height: 90%; animation-delay: 2s; }
+  @keyframes book-ring {
+    0%   { transform: scale(0.7); opacity: 0.7; }
+    100% { transform: scale(1.2); opacity: 0; }
+  }
+  .vis-book .book {
+    width: 220px; height: 280px;
+    background: linear-gradient(135deg, #FFB07A 0%, #FF8C42 100%);
+    border-radius: 8px 14px 14px 8px;
+    box-shadow:
+      -6px 0 0 #d96a23,
+      0 30px 60px rgba(255, 140, 66, 0.4),
+      0 0 80px rgba(255, 140, 66, 0.3);
+    position: relative;
+    animation: float 4s ease-in-out infinite;
+    overflow: hidden;
+  }
+  .vis-book .book::before {
+    content: '';
+    position: absolute;
+    top: 30px; left: 30px; right: 30px; bottom: 30px;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    border-radius: 4px;
+  }
+  .vis-book .book::after {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 60px; height: 60px;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle, white 0%, transparent 70%);
+    border-radius: 50%;
+    opacity: 0.6;
+  }
+  .sound-ring {
+    position: absolute;
+    border: 2px solid var(--accent-orange);
+    border-radius: 50%;
+    opacity: 0;
+    animation: ring 2.4s ease-out infinite;
+  }
+  .sound-ring:nth-child(2) { animation-delay: 0s; width: 280px; height: 280px; }
+  .sound-ring:nth-child(3) { animation-delay: 0.8s; width: 280px; height: 280px; }
+  .sound-ring:nth-child(4) { animation-delay: 1.6s; width: 280px; height: 280px; }
+  @keyframes ring {
+    0% { transform: scale(0.6); opacity: 0.7; }
+    100% { transform: scale(1.6); opacity: 0; }
+  }
 
-        .feature-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-            color: #333;
-        }
+  /* Visual B — globe with books */
+  .vis-globe {
+    aspect-ratio: 1;
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .globe {
+    width: 280px; height: 280px;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 35% 35%, #B89BFF 0%, #7B61FF 50%, #4A36B5 100%);
+    box-shadow:
+      0 30px 80px rgba(123, 97, 255, 0.4),
+      inset -20px -20px 60px rgba(0, 0, 0, 0.3),
+      inset 20px 20px 60px rgba(255, 255, 255, 0.2);
+    position: relative;
+  }
+  .globe::before, .globe::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 1.5px solid rgba(255, 255, 255, 0.15);
+  }
+  .globe::before { transform: rotateY(60deg) scaleX(0.4); }
+  .globe::after { transform: rotateX(70deg) scaleY(0.3); border-style: dashed; }
+  .orbit {
+    position: absolute;
+    width: 380px; height: 380px;
+    border-radius: 50%;
+    border: 1px dashed rgba(123, 97, 255, 0.3);
+    animation: spin 20s linear infinite;
+  }
+  .orbit-book {
+    position: absolute;
+    width: 36px; height: 44px;
+    background: linear-gradient(135deg, #FFB07A 0%, #FF8C42 100%);
+    border-radius: 3px 5px 5px 3px;
+    box-shadow: -3px 0 0 #d96a23, 0 8px 20px rgba(255, 140, 66, 0.5);
+    animation: counter-spin 20s linear infinite;
+  }
+  .orbit-book:nth-child(1) { top: -22px; left: 50%; transform: translateX(-50%); }
+  .orbit-book:nth-child(2) {
+    bottom: -22px; left: 50%; transform: translateX(-50%);
+    background: linear-gradient(135deg, #B89BFF 0%, #7B61FF 100%);
+    box-shadow: -3px 0 0 #4A36B5, 0 8px 20px rgba(123, 97, 255, 0.5);
+  }
+  .orbit-book:nth-child(3) {
+    top: 50%; left: -22px; transform: translateY(-50%);
+    background: linear-gradient(135deg, #6FE0C0 0%, #3FB28E 100%);
+    box-shadow: -3px 0 0 #2a7a62, 0 8px 20px rgba(63, 178, 142, 0.5);
+  }
+  .orbit-book:nth-child(4) {
+    top: 50%; right: -22px; transform: translateY(-50%);
+    background: linear-gradient(135deg, #FFD68C 0%, #F0A93B 100%);
+    box-shadow: -3px 0 0 #b97a1a, 0 8px 20px rgba(240, 169, 59, 0.5);
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @keyframes counter-spin { to { transform: translateX(-50%) rotate(-360deg); } }
+  .lang-script-display {
+    position: absolute;
+    bottom: 20px;
+    left: 50%; transform: translateX(-50%);
+    background: white;
+    color: var(--text-dark);
+    padding: 10px 22px;
+    border-radius: 999px;
+    font-size: 16px; font-weight: 600;
+    box-shadow: 0 8px 24px rgba(123, 97, 255, 0.25);
+    border: 1px solid var(--border-light);
+    min-width: 140px; text-align: center;
+    transition: opacity 300ms ease;
+  }
 
-        .feature-card p {
-            color: #666;
-            line-height: 1.8;
-        }
+  /* Visual C — magical book with sparkles */
+  .vis-magic {
+    aspect-ratio: 1;
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .magic-book {
+    width: 240px; height: 200px;
+    position: relative;
+    perspective: 600px;
+  }
+  .magic-book .left-page,
+  .magic-book .right-page {
+    position: absolute;
+    top: 0;
+    width: 50%; height: 100%;
+    background: linear-gradient(180deg, #fff8e8 0%, #ead7a8 100%);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+  }
+  .magic-book .left-page {
+    left: 0;
+    transform: rotateY(15deg);
+    transform-origin: right center;
+    border-radius: 6px 0 0 6px;
+  }
+  .magic-book .right-page {
+    right: 0;
+    transform: rotateY(-15deg);
+    transform-origin: left center;
+    border-radius: 0 6px 6px 0;
+  }
+  .magic-glow {
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 180px; height: 180px;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle, rgba(255, 217, 184, 0.9) 0%, rgba(155, 133, 255, 0.4) 40%, transparent 70%);
+    border-radius: 50%;
+    animation: pulse-glow 3s ease-in-out infinite;
+  }
+  @keyframes pulse-glow {
+    0%, 100% { opacity: 0.7; transform: translate(-50%, -50%) scale(1); }
+    50% { opacity: 1; transform: translate(-50%, -50%) scale(1.15); }
+  }
+  .sparkle {
+    position: absolute;
+    width: 12px; height: 12px;
+    background: white;
+    clip-path: polygon(50% 0, 60% 40%, 100% 50%, 60% 60%, 50% 100%, 40% 60%, 0 50%, 40% 40%);
+    animation: sparkle-rise 3s ease-in-out infinite;
+    opacity: 0;
+  }
+  .sparkle:nth-child(3) { left: 30%; top: 40%; animation-delay: 0s; background: var(--accent-orange); }
+  .sparkle:nth-child(4) { left: 65%; top: 30%; animation-delay: 0.6s; background: var(--accent-purple-soft); width: 14px; height: 14px; }
+  .sparkle:nth-child(5) { left: 50%; top: 60%; animation-delay: 1.2s; background: white; width: 10px; height: 10px; }
+  .sparkle:nth-child(6) { left: 20%; top: 60%; animation-delay: 1.8s; background: var(--accent-orange-soft); }
+  .sparkle:nth-child(7) { left: 75%; top: 65%; animation-delay: 0.3s; background: var(--accent-purple); width: 8px; height: 8px; }
+  .sparkle:nth-child(8) { left: 40%; top: 25%; animation-delay: 1.5s; background: white; width: 9px; height: 9px; }
+  @keyframes sparkle-rise {
+    0% { transform: translateY(20px) rotate(0); opacity: 0; }
+    30% { opacity: 1; }
+    100% { transform: translateY(-60px) rotate(180deg); opacity: 0; }
+  }
 
-        /* 应用截图区域 */
-        .screenshots {
-            background: linear-gradient(135deg, #4B39EF 0%, #FF5963 50%, #EE8B60 100%);
-            padding: 80px 0;
-            text-align: center;
-        }
+  /* Visual D — Lock screen */
+  .vis-lock {
+    aspect-ratio: 1;
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+  .lock-phone {
+    width: 280px; height: 480px;
+    background: linear-gradient(180deg, #1a1a2e 0%, #08081f 100%);
+    border-radius: 40px;
+    padding: 32px 24px;
+    box-shadow:
+      0 0 0 2px rgba(26, 26, 46, 0.1),
+      0 30px 80px rgba(26, 26, 46, 0.2);
+    position: relative;
+    overflow: hidden;
+  }
+  .lock-phone::before {
+    /* night sky */
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 20% 20%, rgba(123, 97, 255, 0.3) 0%, transparent 40%),
+      radial-gradient(circle at 80% 30%, rgba(255, 140, 66, 0.15) 0%, transparent 40%);
+  }
+  .moon {
+    position: absolute;
+    top: 60px; right: 40px;
+    width: 50px; height: 50px;
+    background: radial-gradient(circle at 35% 35%, #fff8e0 0%, #f0d480 100%);
+    border-radius: 50%;
+    box-shadow: 0 0 30px rgba(240, 212, 128, 0.5);
+  }
+  .lock-time {
+    position: relative; z-index: 1;
+    color: white; text-align: center; margin-top: 20px;
+  }
+  .lock-time .h { font-size: 56px; font-weight: 200; letter-spacing: -2px; line-height: 1; }
+  .lock-time .d { font-size: 13px; color: var(--text-light-muted); margin-top: 6px; }
+  .lock-player {
+    position: absolute;
+    bottom: 40px; left: 24px; right: 24px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 18px;
+    padding: 16px;
+  }
+  .lock-player-row { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+  .lock-cover {
+    width: 44px; height: 44px;
+    background: linear-gradient(135deg, var(--accent-orange) 0%, var(--accent-purple) 100%);
+    border-radius: 8px;
+    flex-shrink: 0;
+  }
+  .lock-meta { flex: 1; min-width: 0; }
+  .lock-meta .t { color: white; font-size: 13px; font-weight: 600; }
+  .lock-meta .s { color: var(--text-light-muted); font-size: 11px; }
+  .progress {
+    height: 3px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 999px;
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+  .progress-fill {
+    height: 100%;
+    width: 45%;
+    background: white;
+    border-radius: 999px;
+    animation: progress 8s linear infinite;
+  }
+  @keyframes progress {
+    0% { width: 0%; }
+    100% { width: 100%; }
+  }
+  .lock-controls {
+    display: flex; justify-content: center; gap: 18px;
+    color: white;
+  }
+  .lock-controls span {
+    width: 32px; height: 32px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+  }
+  .lock-controls .play {
+    width: 38px; height: 38px;
+    background: white;
+    color: var(--text-dark);
+    border-radius: 50%;
+    font-size: 12px;
+  }
+  .lock-stars {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .lock-stars span {
+    position: absolute;
+    width: 2px; height: 2px;
+    background: white;
+    border-radius: 50%;
+    box-shadow: 0 0 4px white;
+    animation: twinkle 2s ease-in-out infinite;
+  }
+  .lock-stars span:nth-child(1) { top: 10%; left: 20%; animation-delay: 0s; }
+  .lock-stars span:nth-child(2) { top: 18%; left: 70%; animation-delay: 0.5s; }
+  .lock-stars span:nth-child(3) { top: 28%; left: 30%; animation-delay: 1s; }
+  .lock-stars span:nth-child(4) { top: 35%; left: 80%; animation-delay: 1.5s; }
+  .lock-stars span:nth-child(5) { top: 45%; left: 15%; animation-delay: 0.7s; }
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+  }
 
-        .screenshots h2 {
-            color: white;
-            font-size: 2.5rem;
-            margin-bottom: 60px;
-        }
+  /* ───────── Stats ───────── */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    margin-bottom: 100px;
+  }
+  .stat {
+    text-align: center;
+  }
+  .stat .num {
+    font-size: clamp(56px, 8vw, 110px);
+    font-weight: 700;
+    letter-spacing: -3px;
+    line-height: 1;
+    background: linear-gradient(135deg, white 0%, var(--accent-orange-soft) 50%, var(--accent-purple-soft) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 14px;
+  }
+  .stat .lbl {
+    color: var(--text-light-muted);
+    font-size: 16px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 500;
+  }
+  .global-tagline {
+    text-align: center;
+    font-size: clamp(28px, 3.5vw, 48px);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -1px;
+    margin-bottom: 70px;
+  }
+  .global-mark {
+    text-align: center;
+  }
+  .global-mark .wm {
+    font-size: clamp(56px, 8vw, 92px);
+    font-weight: 700;
+    letter-spacing: -3px;
+    background: linear-gradient(135deg, white 0%, #c0c0e0 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 16px;
+    position: relative;
+    display: inline-block;
+  }
+  .global-mark .wm::after {
+    content: '';
+    position: absolute;
+    width: 12px; height: 12px;
+    background: var(--accent-orange);
+    border-radius: 50%;
+    bottom: 18%;
+    right: -18px;
+    box-shadow: 0 0 16px var(--accent-orange);
+  }
+  .global-scripts {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2px 0;
+    max-width: 660px;
+    margin: 0 auto;
+    line-height: 2;
+  }
+  .global-scripts span {
+    white-space: nowrap;
+    font-size: 16px;
+    letter-spacing: 0.3px;
+    background: linear-gradient(90deg, var(--text-light-muted) 0%, white 50%, var(--text-light-muted) 100%);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 4s linear infinite;
+  }
+  .global-scripts .sep {
+    color: rgba(160,160,176,0.35);
+    -webkit-text-fill-color: rgba(160,160,176,0.35);
+    background: none;
+    -webkit-background-clip: unset;
+    background-clip: unset;
+    animation: none;
+    font-size: 16px;
+    padding: 0 5px;
+  }
+  @keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
 
-        .screenshot-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-            margin-top: 40px;
-        }
+  /* ───────── CTA ───────── */
+  .cta {
+    background: radial-gradient(ellipse at center, #4a3899 0%, #1a1238 40%, var(--bg-dark) 80%);
+    padding: 160px 0;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+  }
+  .cta-content { position: relative; z-index: 2; }
+  .cta h2 {
+    font-size: clamp(36px, 5vw, 64px);
+    font-weight: 600;
+    letter-spacing: -1.5px;
+    line-height: 1.1;
+    margin-bottom: 20px;
+  }
+  .cta-sub {
+    color: var(--text-light-muted);
+    font-size: 18px;
+    margin-bottom: 50px;
+  }
+  .qr {
+    width: 220px; height: 220px;
+    margin: 0 auto 24px;
+    background: white;
+    border-radius: 24px;
+    padding: 18px;
+    box-shadow: 0 20px 60px rgba(123, 97, 255, 0.3);
+    position: relative;
+  }
+  .qr-grid {
+    width: 100%; height: 100%;
+    background-image:
+      conic-gradient(from 0deg at 50% 50%, var(--text-dark) 0% 25%, transparent 0% 50%, var(--text-dark) 0% 75%, transparent 0%);
+    display: grid;
+    grid-template-columns: repeat(11, 1fr);
+    grid-template-rows: repeat(11, 1fr);
+    gap: 1px;
+    background: white;
+  }
+  .qr-grid span {
+    background: var(--text-dark);
+    border-radius: 1px;
+  }
+  .qr-grid span.empty { background: transparent; }
+  .qr-label {
+    margin-top: 14px;
+    color: var(--text-light-muted);
+    font-size: 13px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .badges {
+    display: flex; gap: 14px; justify-content: center; margin-top: 36px; flex-wrap: wrap;
+  }
+  .badge {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 22px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--border-dark);
+    border-radius: 14px;
+    color: white;
+    text-decoration: none;
+    transition: all 200ms ease;
+    backdrop-filter: blur(10px);
+  }
+  .badge:hover {
+    background: rgba(255, 255, 255, 0.12);
+    transform: translateY(-2px);
+  }
+  .badge-icon {
+    width: 32px; height: 32px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+  }
+  .badge-text { text-align: left; line-height: 1.2; }
+  .badge-text .small { font-size: 10px; color: var(--text-light-muted); }
+  .badge-text .big { font-size: 16px; font-weight: 600; }
+  .availability {
+    margin-top: 30px;
+    color: var(--text-light-muted);
+    font-size: 14px;
+  }
+  .floaty {
+    position: absolute;
+    pointer-events: none;
+    opacity: 0;
+    animation: floaty 8s ease-in-out infinite;
+    color: white;
+    font-size: 22px;
+  }
+  @keyframes floaty {
+    0% { transform: translateY(40px) rotate(0); opacity: 0; }
+    20% { opacity: 0.6; }
+    80% { opacity: 0.4; }
+    100% { transform: translateY(-200px) rotate(180deg); opacity: 0; }
+  }
 
-        .screenshot {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 20px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
+  /* ───────── Footer ───────── */
+  .footer {
+    background: var(--bg-dark);
+    padding: 50px 0 40px;
+    border-top: 1px solid var(--border-dark);
+  }
+  .footer-inner {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 24px;
+    align-items: center;
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+  .footer-left { display: flex; flex-direction: column; gap: 6px; }
+  .footer-brand { display: flex; align-items: center; gap: 4px; font-size: 18px; font-weight: 700; }
+  .footer-brand .dot { width: 6px; height: 6px; background: var(--accent-orange); border-radius: 50%; margin-left: 2px; }
+  .footer-copy { color: var(--text-light-muted); font-size: 13px; }
+  .footer-langs {
+    display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;
+  }
+  .footer-lang {
+    padding: 6px 12px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border-dark);
+    border-radius: 999px;
+    color: var(--text-light-muted);
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 200ms ease;
+    font-family: inherit;
+  }
+  .footer-lang:hover { color: white; }
+  .footer-right { display: flex; gap: 24px; justify-content: flex-end; flex-wrap: wrap; }
+  .footer-right a {
+    color: var(--text-light-muted);
+    text-decoration: none;
+    font-size: 13px;
+    transition: color 200ms ease;
+  }
+  .footer-right a:hover { color: white; }
 
-        /* 下载区域 */
-        .download {
-            background: white;
-            padding: 80px 0;
-            text-align: center;
-        }
+  /* ───────── i18n fade ───────── */
+  body.lang-switching [data-i18n] {
+    opacity: 0;
+    transition: opacity 300ms ease;
+  }
+  [data-i18n] {
+    transition: opacity 300ms ease;
+  }
 
-        .download h2 {
-            font-size: 2.5rem;
-            margin-bottom: 30px;
-            color: #333;
-        }
+  /* ───────── Responsive ───────── */
+  @media (max-width: 980px) {
+    .nav { padding: 14px 20px; }
+    .nav-cta { display: none; }
+    .pain-grid { grid-template-columns: 1fr; }
+    .steps { grid-template-columns: 1fr; gap: 16px; }
+    .arrow { display: none; }
+    .feature-inner { grid-template-columns: 1fr !important; gap: 50px; padding: 0 24px; }
+    .feature-inner.reverse > .feature-text { order: -1; }
+    .stats { grid-template-columns: 1fr; gap: 50px; }
+    .footer-inner { grid-template-columns: 1fr; text-align: center; }
+    .footer-right { justify-content: center; }
+    .morph { padding: 40px 24px; grid-template-columns: 1fr; gap: 24px; }
+    .morph-page { margin: 0 auto; }
+  }
+  @media (max-width: 640px) {
+    .lang-switcher { padding: 3px; }
+    .lang-btn { padding: 6px 10px; font-size: 12px; }
+    .section-pad { padding: 80px 0; }
+    .container { padding: 0 24px; }
+    .phone { width: 280px; height: 560px; }
+    .hero { padding: 120px 16px 60px; }
+    .pain-card { padding: 32px 24px; }
+  }
 
-        .download p {
-            font-size: 1.2rem;
-            color: #666;
-            margin-bottom: 40px;
-        }
-
-        .download-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-
-        .download-btn {
-            display: inline-block;
-            background: #333;
-            color: white;
-            padding: 15px 30px;
-            text-decoration: none;
-            border-radius: 10px;
-            font-weight: 600;
-            transition: background 0.3s ease;
-        }
-
-        .download-btn:hover {
-            background: #555;
-        }
-
-        /* 页脚 */
-        .footer {
-            background: #333;
-            color: white;
-            text-align: center;
-            padding: 40px 0;
-        }
-
-
-
-        /* 语言切换 */
-        .language-selector {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-
-        .language-btn {
-            background: none;
-            border: 1px solid #ddd;
-            padding: 5px 10px;
-            border-radius: 15px;
-            cursor: pointer;
-            font-size: 12px;
-            transition: all 0.3s ease;
-            color: #333;
-        }
-
-        .language-btn:hover {
-            background: #4B39EF;
-            color: white;
-            border-color: #4B39EF;
-        }
-
-        .language-btn.active {
-            background: #4B39EF;
-            color: white;
-            border-color: #4B39EF;
-        }
-
-        /* 响应式设计 */
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-
-            .hero p {
-                font-size: 1.1rem;
-            }
-
-            .features h2,
-            .screenshots h2,
-            .download h2 {
-                font-size: 2rem;
-            }
-
-            .nav-links {
-                gap: 20px;
-            }
-
-            .download-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .language-selector {
-                gap: 5px;
-            }
-
-            .language-btn {
-                padding: 3px 8px;
-                font-size: 10px;
-            }
-        }
-    </style>
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.1ms !important;
+      scroll-behavior: auto !important;
+    }
+    .reveal { opacity: 1; transform: none; }
+  }
+</style>
 </head>
-<body>
-    <!-- 导航栏 -->
-    <nav class="navbar">
-        <div class="container">
-            <div class="nav-content">
-                <div class="logo">📚 YouRe</div>
-                <div class="nav-links">
-                    <a href="#" data-key="nav-home">Home</a>
-                    <a href="TermsOfUse.html" data-key="nav-tos">Terms of Use</a>
-                    <a href="PrivacyPolicy.html" data-key="nav-pp">Privacy Policy</a>
-                    <div class="language-selector">
-                        <button class="language-btn" onclick="changeLanguage('zh')">中文</button>
-                        <button class="language-btn active" onclick="changeLanguage('en')">English</button>
-                        <button class="language-btn" onclick="changeLanguage('ja')">日本語</button>
-                    </div>
-                </div>
-            </div>
+<body data-lang="en">
+
+<!-- ───────── NAV ───────── -->
+<nav class="nav" id="nav" data-screen-label="Top Nav">
+  <div class="nav-brand">YouRe<span class="dot"></span></div>
+  <div class="nav-right">
+    <div class="lang-switcher" role="tablist">
+      <button class="lang-btn active" data-lang="en">EN</button>
+      <button class="lang-btn" data-lang="zh">中文</button>
+      <button class="lang-btn" data-lang="ja">日本語</button>
+      <button class="lang-btn" data-lang="ko">한국어</button>
+    </div>
+    <div class="nav-links">
+      <a href="terms.html" class="nav-link">Terms of Use</a>
+      <a href="privacy.html" class="nav-link">Privacy Policy</a>
+    </div>
+    <a href="#cta" class="nav-cta" data-i18n="nav_download">Download</a>
+  </div>
+</nav>
+
+<!-- ───────── HERO ───────── -->
+<section class="hero" data-screen-label="01 Hero">
+  <div class="hero-bg">
+    <div class="orb orb-orange"></div>
+    <div class="orb orb-purple"></div>
+    <div class="grid-overlay"></div>
+  </div>
+
+  <div class="hero-content">
+    <span class="overline" data-i18n="hero_overline">AI · BOOKS · CHILDREN</span>
+    <h1>
+      <span data-i18n="hero_title_1">Every child deserves a story.</span>
+      <span class="accent" data-i18n="hero_title_2">Every story deserves your voice.</span>
+    </h1>
+    <p class="hero-sub" data-i18n="hero_sub">Scan any picture book. AI reads it aloud. Your child falls in love with stories — even when you're not there.</p>
+    <div class="hero-buttons">
+      <a href="#cta" class="btn btn-primary"><span data-i18n="hero_btn_primary">Download Free</span> →</a>
+      <a href="#magic" class="btn btn-ghost" data-i18n="hero_btn_ghost">See How It Works</a>
+    </div>
+  </div>
+
+  <div class="phone-wrap">
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="phone-status">
+          <span>9:41</span>
+          <span>● ● ●</span>
         </div>
-    </nav>
-
-    <!-- 主页内容 -->
-    <div class="main-content">
-        <!-- Hero Section -->
-        <section class="hero">
-            <div class="container">
-                <h1>YouRe</h1>
-                <p data-key="hero-subtitle">Intelligent AI narration, immersive reading experience, making reading more enjoyable</p>
-                <a href="#features" class="cta-button" data-key="hero-cta">Explore Features</a>
+        <div class="book-page" style="padding:0;background:none;overflow:hidden;">
+          <img src="images/hero_book_page.png" alt="" style="width:100%;height:100%;object-fit:cover;display:block;" />
+          <div class="scan-line"></div>
+        </div>
+        <div class="player-card">
+          <div class="player-cover"></div>
+          <div class="player-info">
+            <div class="player-title" data-i18n="phone_track">The Little Forest</div>
+            <div class="waveform">
+              <span></span><span></span><span></span><span></span><span></span><span></span>
+              <span></span><span></span><span></span><span></span><span></span><span></span>
             </div>
-        </section>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-        <!-- 功能特色 -->
-        <section id="features" class="features">
-            <div class="container">
-                <h2 data-key="features-title">Powerful Features, Amazing Experience</h2>
-                <div class="features-grid">
-                    <div class="feature-card">
-                        <div class="feature-icon">🤖</div>
-                        <h3 data-key="feature1-title">AI Smart Reading</h3>
-                        <p data-key="feature1-desc">Advanced AI voice technology provides natural and smooth reading experience with multiple voice styles, bringing your books to life</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">🎯</div>
-                        <h3 data-key="feature2-title">Mission System</h3>
-                        <p data-key="feature2-desc">Complete reading tasks to earn coin rewards, including creating books, experiencing AI reading, collecting books and other interesting tasks</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">🎤</div>
-                        <h3 data-key="feature3-title">Parent Voice Recording</h3>
-                        <p data-key="feature3-desc">Parents can record their own voice to read stories for children, letting kids hear mom and dad anytime, freeing up parents' time</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">🏆</div>
-                        <h3 data-key="feature4-title">Achievement System</h3>
-                        <p data-key="feature4-desc">Daily login rewards, reading master badges, unlock various achievements to make reading more motivating</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">📚</div>
-                        <h3 data-key="feature5-title">Personal Library</h3>
-                        <p data-key="feature5-desc">Create and manage your exclusive book collection, support multiple formats, build your own digital library</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">🔥</div>
-                        <h3 data-key="feature6-title">Immersive Experience</h3>
-                        <p data-key="feature6-desc">Beautiful interface design, smooth reading experience, focus mode lets you completely immerse in the world of reading</p>
-                    </div>
+<!-- ───────── PAIN POINTS ───────── -->
+<section class="section-cream section-pad" data-screen-label="02 Pain Points">
+  <div class="container">
+    <div class="section-head reveal">
+      <h2 data-i18n="pain_title">Sound familiar?</h2>
+      <p data-i18n="pain_sub">Every parent knows this feeling.</p>
+    </div>
+    <div class="pain-grid">
+      <div class="pain-card reveal" data-stagger="1">
+        <div class="pain-illo" style="background:none;">
+          <img src="images/pain_1_daddy.png" alt="Father reading bedtime story to wide-awake child" style="width:100%;height:100%;object-fit:cover;display:block;" />
+        </div>
+        <div class="pain-card-body">
+          <h3 data-i18n="pain_1_title">"Read it again, Daddy."</h3>
+          <p data-i18n="pain_1_sub">For the 12th time tonight.</p>
+        </div>
+      </div>
+      <div class="pain-card reveal" data-stagger="2">
+        <div class="pain-illo" style="background:none;">
+          <img src="images/pain_2_books.png" alt="Tower of colorful books with sleeping cat on top" style="width:100%;height:100%;object-fit:cover;display:block;" />
                 </div>
-            </div>
-        </section>
-
-        <!-- 应用截图 -->
-        <section class="screenshots">
-            <div class="container">
-                <h2 data-key="screenshots-title">Beautiful Interface Design</h2>
-                <p style="color: rgba(255,255,255,0.8); font-size: 1.2rem;" data-key="screenshots-subtitle">Clean and elegant design brings you the ultimate reading experience</p>
-                <div class="screenshot-grid">
-                    <div class="screenshot">
-                        <h3 style="color: white; margin-bottom: 10px;" data-key="screenshot1-title">Main Interface</h3>
-                        <p style="color: rgba(255,255,255,0.8);" data-key="screenshot1-desc">Clear book management interface</p>
-                    </div>
-                    <div class="screenshot">
-                        <h3 style="color: white; margin-bottom: 10px;" data-key="screenshot2-title">AI Reading</h3>
-                        <p style="color: rgba(255,255,255,0.8);" data-key="screenshot2-desc">Intelligent voice reading control</p>
-                    </div>
-                    <div class="screenshot">
-                        <h3 style="color: white; margin-bottom: 10px;" data-key="screenshot3-title">Mission Center</h3>
-                        <p style="color: rgba(255,255,255,0.8);" data-key="screenshot3-desc">Rich missions and reward system</p>
-                    </div>
+        <div class="pain-card-body">
+          <h3 data-i18n="pain_2_title">So many great books.</h3>
+          <p data-i18n="pain_2_sub">So little time to read them all.</p>
+        </div>
+      </div>
+      <div class="pain-card reveal" data-stagger="3">
+        <div class="pain-illo" style="background:none;">
+          <img src="images/pain_3_headphones.png" alt="Child with headphones dreaming of books and globe" style="width:100%;height:100%;object-fit:cover;display:block;" />
                 </div>
-            </div>
-        </section>
+        <div class="pain-card-body">
+          <h3 data-i18n="pain_3_title">What if they could explore</h3>
+          <p data-i18n="pain_3_sub">any book, in any language?</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-        <!-- 下载区域 -->
-        <section class="download">
-            <div class="container">
-                <h2 data-key="download-title">Start Your Reading Journey Now</h2>
-                <p data-key="download-subtitle">Download YouRe and start your smart reading experience</p>
-                <div class="download-buttons">
-                    <a href="#" class="download-btn" data-key="download-ios">📱 Download on App Store</a>
-                    <a href="#" class="download-btn" data-key="download-android">🤖 Download on Google Play</a>
-                </div>
-            </div>
-        </section>
+<!-- ───────── MAGIC MOMENT ───────── -->
+<section id="magic" class="section-dark section-pad" data-screen-label="03 Magic Moment">
+  <div class="container">
+    <div class="section-head reveal">
+      <h2 data-i18n="magic_title">Scan. Transform. Listen.</h2>
+      <p data-i18n="magic_sub">Three taps to a story your child can replay forever.</p>
     </div>
 
-    <!-- 页脚 -->
-    <footer class="footer">
-        <div class="container">
-            <p data-key="footer-copyright">YGY LABS 2025</p>
-            <p data-key="footer-slogan">Make reading an enjoyment 📚</p>
+    <div class="steps">
+      <div class="step reveal" data-stagger="1">
+        <div class="step-icon">
+          <svg viewBox="0 0 64 64" width="44" height="44" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="8" y="16" width="48" height="36" rx="4"/>
+            <path d="M22 16 L 26 10 L 38 10 L 42 16"/>
+            <circle cx="32" cy="34" r="9"/>
+            <circle cx="32" cy="34" r="3" fill="white"/>
+          </svg>
         </div>
-    </footer>
+        <h3 data-i18n="step_1_title">Scan any book</h3>
+        <p data-i18n="step_1_sub">Point your camera at any page.</p>
+      </div>
+      <div class="arrow"></div>
+      <div class="step reveal" data-stagger="2">
+        <div class="step-icon glow-purple">
+          <svg viewBox="0 0 64 64" width="44" height="44" fill="none">
+            <path d="M32 8 L 36 24 L 52 28 L 36 32 L 32 48 L 28 32 L 12 28 L 28 24 Z" fill="#7B61FF"/>
+            <circle cx="48" cy="14" r="2.5" fill="#9B85FF"/>
+            <circle cx="14" cy="48" r="2" fill="#9B85FF"/>
+            <circle cx="52" cy="50" r="1.8" fill="white"/>
+          </svg>
+        </div>
+        <h3 data-i18n="step_2_title">AI transforms it</h3>
+        <p data-i18n="step_2_sub">OCR reads the text. TTS voices it naturally.</p>
+      </div>
+      <div class="arrow"></div>
+      <div class="step reveal" data-stagger="3">
+        <div class="step-icon glow-orange">
+          <svg viewBox="0 0 64 64" width="44" height="44" fill="none" stroke="#FF8C42" stroke-width="2.5" stroke-linecap="round">
+            <path d="M14 32 V 32 M 22 24 V 40 M 30 18 V 46 M 38 22 V 42 M 46 28 V 36 M 54 32 V 32"/>
+          </svg>
+        </div>
+        <h3 data-i18n="step_3_title">Your child listens</h3>
+        <p data-i18n="step_3_sub">Anytime. Anywhere. On repeat.</p>
+      </div>
+    </div>
 
-    <script>
-        // 多语言内容
-        const translations = {
-            zh: {
-                'nav-home': '首页',
-                'nav-terms': '服务条款',
-                'hero-subtitle': '智能AI朗读，沉浸式阅读体验，让阅读变得更有趣',
-                'hero-cta': '探索功能',
-                'features-title': '强大功能，精彩体验',
-                'feature1-title': 'AI智能朗读',
-                'feature1-desc': '先进的AI语音技术，提供自然流畅的朗读体验，支持多种语音风格，让你的书籍"活"起来',
-                'feature2-title': '任务系统',
-                'feature2-desc': '完成阅读任务获得金币奖励，包括创建图书、体验AI朗读、收藏书籍等多种有趣任务',
-                'feature3-title': '父母专属录音',
-                'feature3-desc': '父母可以录制专属声音为孩子朗读故事，让孩子随时都能听到爸爸妈妈的声音，解放家长时间',
-                'feature4-title': '成就系统',
-                'feature4-desc': '连续登录奖励、阅读达人徽章，多种成就等你解锁，让阅读更有动力',
-                'feature5-title': '个人图书馆',
-                'feature5-desc': '创建并管理你的专属图书收藏，支持多种格式，打造专属的数字图书馆',
-                'feature6-title': '沉浸体验',
-                'feature6-desc': '精美的界面设计，流畅的阅读体验，专注模式让你完全沉浸在阅读的世界中',
-                'screenshots-title': '精美界面设计',
-                'screenshots-subtitle': '简洁优雅的设计，为你带来极致的阅读体验',
-                'screenshot1-title': '主界面',
-                'screenshot1-desc': '清晰的图书管理界面',
-                'screenshot2-title': 'AI朗读',
-                'screenshot2-desc': '智能语音朗读控制',
-                'screenshot3-title': '任务中心',
-                'screenshot3-desc': '丰富的任务和奖励系统',
-                'download-title': '立即开始阅读之旅',
-                'download-subtitle': '下载YouRe，开启你的智能阅读新体验',
-                'download-ios': '📱 App Store下载',
-                'download-android': '🤖 Google Play下载',
-                'footer-copyright': 'YGY LABS 2025',
-                'footer-slogan': '让阅读成为一种享受 📚',
-                'page-title': 'YouRe - 智能书籍阅读器'
-            },
-            en: {
-                'nav-home': 'Home',
-                'nav-terms': 'Terms of Service',
-                'hero-subtitle': 'Intelligent AI narration, immersive reading experience, making reading more enjoyable',
-                'hero-cta': 'Explore Features',
-                'features-title': 'Powerful Features, Amazing Experience',
-                'feature1-title': 'AI Smart Reading',
-                'feature1-desc': 'Advanced AI voice technology provides natural and smooth reading experience with multiple voice styles, bringing your books to life',
-                'feature2-title': 'Mission System',
-                'feature2-desc': 'Complete reading tasks to earn coin rewards, including creating books, experiencing AI reading, collecting books and other interesting tasks',
-                'feature3-title': 'Parent Voice Recording',
-                'feature3-desc': 'Parents can record their own voice to read stories for children, letting kids hear mom and dad anytime, freeing up parents\' time',
-                'feature4-title': 'Achievement System',
-                'feature4-desc': 'Daily login rewards, reading master badges, unlock various achievements to make reading more motivating',
-                'feature5-title': 'Personal Library',
-                'feature5-desc': 'Create and manage your exclusive book collection, support multiple formats, build your own digital library',
-                'feature6-title': 'Immersive Experience',
-                'feature6-desc': 'Beautiful interface design, smooth reading experience, focus mode lets you completely immerse in the world of reading',
-                'screenshots-title': 'Beautiful Interface Design',
-                'screenshots-subtitle': 'Clean and elegant design brings you the ultimate reading experience',
-                'screenshot1-title': 'Main Interface',
-                'screenshot1-desc': 'Clear book management interface',
-                'screenshot2-title': 'AI Reading',
-                'screenshot2-desc': 'Intelligent voice reading control',
-                'screenshot3-title': 'Mission Center',
-                'screenshot3-desc': 'Rich missions and reward system',
-                'download-title': 'Start Your Reading Journey Now',
-                'download-subtitle': 'Download YouRe and start your smart reading experience',
-                'download-ios': '📱 Download on App Store',
-                'download-android': '🤖 Download on Google Play',
-                'footer-copyright': 'YGY LABS 2025',
-                'footer-slogan': 'Make reading an enjoyment 📚',
-                'page-title': 'YouRe - Smart Reading App'
-            },
-            ja: {
-                'nav-home': 'ホーム',
-                'nav-terms': '利用規約',
-                'hero-subtitle': 'インテリジェントAI音読、没入型読書体験で、読書をもっと楽しく',
-                'hero-cta': '機能を探索',
-                'features-title': '強力な機能、素晴らしい体験',
-                'feature1-title': 'AIスマート音読',
-                'feature1-desc': '先進的なAI音声技術により、自然で滑らかな音読体験を提供し、複数の音声スタイルをサポートして、あなたの本に命を吹き込みます',
-                'feature2-title': 'ミッションシステム',
-                'feature2-desc': '読書タスクを完了してコイン報酬を獲得。本の作成、AI音読体験、本のコレクションなど、様々な興味深いタスクがあります',
-                'feature3-title': '親の音声録音',
-                'feature3-desc': '両親が自分の声で子供のために物語を読み聞かせることができ、いつでもパパとママの声を聞けて、親の時間を解放します',
-                'feature4-title': '達成システム',
-                'feature4-desc': '連続ログイン報酬、読書マスターバッジ、様々な達成項目をアンロックして読書をもっとやる気にさせます',
-                'feature5-title': 'パーソナルライブラリ',
-                'feature5-desc': '専用の本のコレクションを作成・管理し、複数のフォーマットをサポートして、専用のデジタルライブラリを構築します',
-                'feature6-title': '没入体験',
-                'feature6-desc': '美しいインターフェースデザイン、スムーズな読書体験、集中モードで読書の世界に完全に没入できます',
-                'screenshots-title': '美しいインターフェースデザイン',
-                'screenshots-subtitle': 'シンプルでエレガントなデザインが、最高の読書体験をお届けします',
-                'screenshot1-title': 'メインインターフェース',
-                'screenshot1-desc': 'クリアな本管理インターフェース',
-                'screenshot2-title': 'AI音読',
-                'screenshot2-desc': 'インテリジェント音声読み上げ制御',
-                'screenshot3-title': 'ミッションセンター',
-                'screenshot3-desc': '豊富なミッションと報酬システム',
-                'download-title': '今すぐ読書の旅を始めよう',
-                'download-subtitle': 'YouReをダウンロードして、スマート読書体験を始めましょう',
-                'download-ios': '📱 App Storeでダウンロード',
-                'download-android': '🤖 Google Playでダウンロード',
-                'footer-copyright': 'YGY corporation 2025',
-                'footer-slogan': '読書を楽しみにしよう 📚',
-                'page-title': 'YouRe - スマート読書アプリ'
-            }
-        };
+    <div class="morph reveal">
+      <div class="morph-page">
+        <div class="book-illustration"></div>
+        <div class="book-line medium"></div>
+        <div class="book-line short"></div>
+        <div class="book-line medium"></div>
+      </div>
+      <div class="morph-arrow">→</div>
+      <div class="morph-wave">
+        <span style="animation-delay: 0s"></span>
+        <span style="animation-delay: 0.05s"></span>
+        <span style="animation-delay: 0.1s"></span>
+        <span style="animation-delay: 0.15s"></span>
+        <span style="animation-delay: 0.2s"></span>
+        <span style="animation-delay: 0.25s"></span>
+        <span style="animation-delay: 0.3s"></span>
+        <span style="animation-delay: 0.35s"></span>
+        <span style="animation-delay: 0.4s"></span>
+        <span style="animation-delay: 0.45s"></span>
+        <span style="animation-delay: 0.5s"></span>
+        <span style="animation-delay: 0.55s"></span>
+        <span style="animation-delay: 0.6s"></span>
+        <span style="animation-delay: 0.65s"></span>
+        <span style="animation-delay: 0.7s"></span>
+        <span style="animation-delay: 0.75s"></span>
+        <span style="animation-delay: 0.8s"></span>
+        <span style="animation-delay: 0.85s"></span>
+        <span style="animation-delay: 0.9s"></span>
+        <span style="animation-delay: 0.95s"></span>
+      </div>
+    </div>
+  </div>
+</section>
 
-        let currentLanguage = 'en';
+<!-- ───────── FEATURE A ───────── -->
+<section class="feature section-dark" data-screen-label="04a Feature A">
+  <div class="feature-inner">
+    <div class="feature-text reveal">
+      <span class="eyebrow" data-i18n="feat_a_eyebrow">YOUR LIBRARY</span>
+      <h3 data-i18n="feat_a_title">Any physical book. Any time.</h3>
+      <p data-i18n="feat_a_body">Just scan the pages. YouRe reads aloud in natural, expressive voices. Your child can listen on their own, at their own pace.</p>
+      <div class="chips">
+        <span class="chip" data-i18n="chip_en">English</span>
+        <span class="chip" data-i18n="chip_zh">中文</span>
+        <span class="chip" data-i18n="chip_ja">日本語</span>
+        <span class="chip" data-i18n="chip_ko">한국어</span>
+        <span class="chip" data-i18n="chip_fr">Français</span>
+        <span class="chip" data-i18n="chip_de">Deutsch</span>
+        <span class="chip" data-i18n="chip_es">Español</span>
+        <span class="chip" data-i18n="chip_pt">Português</span>
+        <span class="chip" data-i18n="chip_it">Italiano</span>
+        <span class="chip" data-i18n="chip_ru">Русский</span>
+        <span class="chip" data-i18n="chip_th">ภาษาไทย</span>
+        <span class="chip" data-i18n="chip_id">Bahasa Indonesia</span>
+        <span class="chip" data-i18n="chip_vi">Tiếng Việt</span>
+      </div>
+    </div>
+    <div class="vis-book reveal" data-stagger="1">
+      <div class="vis-book-ring"></div>
+      <div class="vis-book-ring"></div>
+      <div class="vis-book-ring"></div>
+      <img class="vis-book-img" src="images/feat_a_book.png" alt="Floating children's book with sound waves" />
+    </div>
+  </div>
+</section>
 
-        function changeLanguage(lang) {
-            currentLanguage = lang;
-            
-            // 更新按钮状态
-            document.querySelectorAll('.language-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            event.target.classList.add('active');
-            
-            // 更新页面内容
-            updatePageContent();
-            
-            // 保存语言设置
-            localStorage.setItem('language', lang);
-        }
+<!-- ───────── FEATURE B ───────── -->
+<section class="feature section-cream" data-screen-label="04b Feature B">
+  <div class="feature-inner reverse">
+    <div class="vis-globe reveal">
+      <div class="orbit">
+        <div class="orbit-book"></div>
+        <div class="orbit-book"></div>
+        <div class="orbit-book"></div>
+        <div class="orbit-book"></div>
+      </div>
+      <div class="globe"></div>
+      <div class="lang-script-display" id="scriptDisplay">The Forest</div>
+    </div>
+    <div class="feature-text reveal" data-stagger="1">
+      <span class="eyebrow" data-i18n="feat_b_eyebrow">EVERY LANGUAGE</span>
+      <h3 data-i18n="feat_b_title">The same book. A new language.</h3>
+      <p data-i18n="feat_b_body">Turn your child's favorite Chinese story into English practice. Or Japanese. Or Korean. Language learning through books they already love.</p>
+    </div>
+  </div>
+</section>
 
-        function updatePageContent() {
-            const translation = translations[currentLanguage];
-            
-            // 更新所有带有data-key的元素
-            document.querySelectorAll('[data-key]').forEach(element => {
-                const key = element.getAttribute('data-key');
-                if (translation[key]) {
-                    element.textContent = translation[key];
-                }
-            });
-            
-            // 更新页面标题
-            document.title = translation['page-title'];
-        }
+<!-- ───────── FEATURE C ───────── -->
+<section class="feature section-dark" data-screen-label="04c Feature C">
+  <div class="feature-inner">
+    <div class="feature-text reveal">
+      <span class="eyebrow" data-i18n="feat_c_eyebrow">PERSONAL STORIES</span>
+      <h3 data-i18n="feat_c_title">AI creates stories starring their hero.</h3>
+      <p data-i18n="feat_c_body">Tell our AI your child's favorite character and theme. It writes a brand new story, personalized just for them. Then reads it aloud.</p>
+      <div class="small-note" data-i18n="feat_c_note">✦ Powered by Gemini AI</div>
+    </div>
+    <div class="vis-magic reveal" data-stagger="1">
+      <img src="images/feat_c_magic_book.png" alt="Magical open book with characters flying out" style="width:85%;max-width:380px;border-radius:16px;box-shadow:0 30px 80px rgba(123,97,255,0.4);position:relative;z-index:2;" />
+      <canvas class="magic-stars-canvas" id="magicStarsCanvas" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:3;"></canvas>
+    </div>
+  </div>
+</section>
 
+<!-- ───────── FEATURE D ───────── -->
+<section class="feature section-cream" data-screen-label="04d Feature D">
+  <div class="feature-inner reverse">
+    <div class="vis-lock reveal">
+      <div class="lock-phone">
+        <div class="lock-stars"><span></span><span></span><span></span><span></span><span></span></div>
+        <div class="moon"></div>
+        <div class="lock-time">
+          <div class="h">20:14</div>
+          <div class="d" data-i18n="lock_date">Friday, June 6</div>
+        </div>
+        <div class="lock-player">
+          <div class="lock-player-row">
+            <div class="lock-cover" style="background:none;overflow:hidden;"><img src="images/lockscreen_cover.png" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:8px;" /></div>
+            <div class="lock-meta">
+              <div class="t" data-i18n="lock_track">Goodnight Forest</div>
+              <div class="s" data-i18n="lock_album">YouRe · Storybook</div>
+            </div>
+          </div>
+          <div class="progress"><div class="progress-fill"></div></div>
+          <div class="lock-controls">
+            <span>⏮</span><span class="play">▶</span><span>⏭</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="feature-text reveal" data-stagger="1">
+      <span class="eyebrow" data-i18n="feat_d_eyebrow">ALWAYS THERE</span>
+      <h3 data-i18n="feat_d_title">Background play. Lock screen controls.</h3>
+      <p data-i18n="feat_d_body">Once a story starts, it keeps going. Even when the screen is off. Like a bedtime companion that never gets tired.</p>
+    </div>
+  </div>
+</section>
 
+<!-- ───────── GLOBAL REACH ───────── -->
+<section class="section-dark section-pad" data-screen-label="05 Global Reach">
+  <div class="container">
+    <div class="stats">
+      <div class="stat reveal" data-stagger="1">
+        <div class="num" data-counter="10000" data-suffix="+">0</div>
+        <div class="lbl" data-i18n="stat_books">Books scanned</div>
+      </div>
+      <div class="stat reveal" data-stagger="2">
+        <div class="num" data-counter="50000" data-suffix="+">0</div>
+        <div class="lbl" data-i18n="stat_hours">Hours listened</div>
+      </div>
+      <div class="stat reveal" data-stagger="3">
+        <div class="num" data-counter="13">0</div>
+        <div class="lbl" data-i18n="stat_langs">Languages supported</div>
+      </div>
+    </div>
+    <div class="global-tagline reveal">
+      <div data-i18n="global_line_1">Built for families.</div>
+      <div data-i18n="global_line_2">Spoken in every language.</div>
+    </div>
+    <div class="global-mark reveal" data-stagger="1">
+      <div class="wm">YouRe</div>
+      <div class="global-scripts"><span>English</span><span class="sep">·</span><span>中文</span><span class="sep">·</span><span>日本語</span><span class="sep">·</span><span>한국어</span><span class="sep">·</span><span>Français</span><span class="sep">·</span><span>Deutsch</span><span class="sep">·</span><span>Español</span><span class="sep">·</span><span>Português</span><span class="sep">·</span><span>Italiano</span><span class="sep">·</span><span>Русский</span><span class="sep">·</span><span>ภาษาไทย</span><span class="sep">·</span><span>Bahasa Indonesia</span><span class="sep">·</span><span>Tiếng Việt</span></div>
+    </div>
+  </div>
+</section>
 
-        // 页面加载时初始化语言
-        window.addEventListener('DOMContentLoaded', function() {
-            // 从本地存储获取语言设置
-            const savedLanguage = localStorage.getItem('language') || 'en';
-            
-            // 设置对应的按钮为活跃状态
-            document.querySelectorAll('.language-btn').forEach(btn => {
-                btn.classList.remove('active');
-                if (btn.textContent.includes('中文') && savedLanguage === 'zh') btn.classList.add('active');
-                if (btn.textContent.includes('English') && savedLanguage === 'en') btn.classList.add('active');
-                if (btn.textContent.includes('日本語') && savedLanguage === 'ja') btn.classList.add('active');
-            });
-            
-            currentLanguage = savedLanguage;
-            updatePageContent();
-        });
+<!-- ───────── CTA ───────── -->
+<section id="cta" class="cta" data-screen-label="06 Download CTA">
+  <!-- floaty decorations -->
+  <span class="floaty" style="left:10%; bottom:10%; animation-delay:0s">✦</span>
+  <span class="floaty" style="left:20%; bottom:15%; animation-delay:1.5s">📖</span>
+  <span class="floaty" style="left:80%; bottom:5%; animation-delay:0.7s">★</span>
+  <span class="floaty" style="left:88%; bottom:20%; animation-delay:3s">📖</span>
+  <span class="floaty" style="left:70%; bottom:15%; animation-delay:2s">✦</span>
+  <span class="floaty" style="left:15%; bottom:25%; animation-delay:4s">★</span>
+  <span class="floaty" style="left:50%; bottom:5%; animation-delay:5s">✦</span>
 
-        // 平滑滚动
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
+  <div class="cta-content container">
+    <h2 class="reveal" data-i18n="cta_title">Start your child's story tonight.</h2>
+    <p class="cta-sub reveal" data-stagger="1" data-i18n="cta_sub">Free to download. No credit card required.</p>
+    <div class="reveal" data-stagger="2">
+      <div class="qr">
+        <div class="qr-grid" id="qrGrid"></div>
+      </div>
+      <div class="qr-label" data-i18n="qr_label">Scan to Download</div>
+    </div>
+    <div class="badges reveal" data-stagger="3">
+      <a href="https://apps.apple.com/app/id6602890877" target="_blank" rel="noopener" class="badge">
+        <div class="badge-icon">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="white"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
+        </div>
+        <div class="badge-text">
+          <div class="small" data-i18n="badge_apple_small">Download on the</div>
+          <div class="big">App Store</div>
+        </div>
+      </a>
+      <a href="https://play.google.com/store/apps/details?id=com.ygy.bookreader" target="_blank" rel="noopener" class="badge">
+        <div class="badge-icon">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="white"><path d="M3 20.5V3.5c0-.41.17-.78.43-1.05L13.06 12 3.43 21.55c-.26-.27-.43-.64-.43-1.05zM14.43 12.85l2.28 2.28-11.43 6.62 9.15-8.9zm0-1.7L5.28 2.25l11.43 6.62-2.28 2.28zm6.85.85c.41.23.72.66.72 1.13s-.31.9-.72 1.13l-2.55 1.48-2.62-2.61 2.62-2.61 2.55 1.48z"/></svg>
+        </div>
+        <div class="badge-text">
+          <div class="small" data-i18n="badge_google_small">Get it on</div>
+          <div class="big">Google Play</div>
+        </div>
+      </a>
+    </div>
+    <div class="availability reveal" data-stagger="4" data-i18n="availability">Available on iOS and Android</div>
+  </div>
+</section>
 
-        // 导航栏滚动效果
-        window.addEventListener('scroll', function() {
-            const navbar = document.querySelector('.navbar');
-            if (window.scrollY > 50) {
-                navbar.style.background = 'rgba(255, 255, 255, 0.98)';
-            } else {
-                navbar.style.background = 'rgba(255, 255, 255, 0.95)';
-            }
-        });
-    </script>
+<!-- ───────── FOOTER ───────── -->
+<footer class="footer" data-screen-label="07 Footer">
+  <div class="footer-inner">
+    <div class="footer-left">
+      <div class="footer-brand">YouRe<span class="dot"></span></div>
+      <div class="footer-copy" data-i18n="footer_copy">© 2026 YouRe. All rights reserved.</div>
+    </div>
+    <div class="footer-langs">
+      <button class="footer-lang" data-lang="en">English</button>
+      <button class="footer-lang" data-lang="zh">中文</button>
+      <button class="footer-lang" data-lang="ja">日本語</button>
+      <button class="footer-lang" data-lang="ko">한국어</button>
+    </div>
+    <div class="footer-right">
+      <a href="privacy.html" data-i18n="footer_privacy">Privacy Policy</a>
+      <a href="terms.html" data-i18n="footer_terms">Terms of Use</a>
+      <a href="#" data-i18n="footer_contact">Contact</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ───────── i18n ───────── */
+const I18N = {
+  en: {
+    nav_download: "Download",
+    hero_overline: "AI · BOOKS · CHILDREN",
+    hero_title_1: "Every child deserves a story.",
+    hero_title_2: "Every story deserves your voice.",
+    hero_sub: "Scan any picture book. AI reads it aloud. Your child falls in love with stories — even when you're not there.",
+    hero_btn_primary: "Download Free",
+    hero_btn_ghost: "See How It Works",
+    phone_track: "The Little Forest",
+    pain_title: "Sound familiar?",
+    pain_sub: "Every parent knows this feeling.",
+    pain_1_title: "\u201CRead it again, Daddy.\u201D",
+    pain_1_sub: "For the 12th time tonight.",
+    pain_2_title: "So many great books.",
+    pain_2_sub: "So little time to read them all.",
+    pain_3_title: "What if they could explore",
+    pain_3_sub: "any book, in any language?",
+    magic_title: "Scan. Transform. Listen.",
+    magic_sub: "Three taps to a story your child can replay forever.",
+    step_1_title: "Scan any book",
+    step_1_sub: "Point your camera at any page.",
+    step_2_title: "AI transforms it",
+    step_2_sub: "OCR reads the text. TTS voices it naturally.",
+    step_3_title: "Your child listens",
+    step_3_sub: "Anytime. Anywhere. On repeat.",
+    feat_a_eyebrow: "YOUR LIBRARY",
+    feat_a_title: "Any physical book. Any time.",
+    feat_a_body: "Just scan the pages. YouRe reads aloud in natural, expressive voices. Your child can listen on their own, at their own pace.",
+    chip_en: "English",
+    chip_zh: "Chinese",
+    chip_ja: "Japanese",
+    chip_ko: "Korean",
+    chip_fr: "Français",
+    chip_de: "Deutsch",
+    chip_es: "Español",
+    chip_pt: "Português",
+    chip_it: "Italiano",
+    chip_ru: "Русский",
+    chip_th: "ภาษาไทย",
+    chip_id: "Bahasa Indonesia",
+    chip_vi: "Tiếng Việt",
+    feat_b_eyebrow: "EVERY LANGUAGE",
+    feat_b_title: "The same book. A new language.",
+    feat_b_body: "Turn your child's favorite Chinese story into English practice. Or Japanese. Or Korean. Language learning through books they already love.",
+    feat_c_eyebrow: "PERSONAL STORIES",
+    feat_c_title: "AI creates stories starring their hero.",
+    feat_c_body: "Tell our AI your child's favorite character and theme. It writes a brand new story, personalized just for them. Then reads it aloud.",
+    feat_c_note: "✦ Powered by Gemini AI",
+    feat_d_eyebrow: "ALWAYS THERE",
+    feat_d_title: "Background play. Lock screen controls.",
+    feat_d_body: "Once a story starts, it keeps going. Even when the screen is off. Like a bedtime companion that never gets tired.",
+    lock_date: "Friday, June 6",
+    lock_track: "Goodnight Forest",
+    lock_album: "YouRe · Storybook",
+    stat_books: "Books scanned",
+    stat_hours: "Hours listened",
+    stat_langs: "Languages supported",
+    global_line_1: "Built for families.",
+    global_line_2: "Spoken in every language.",
+    cta_title: "Start your child's story tonight.",
+    cta_sub: "Free to download. No credit card required.",
+    qr_label: "Scan to Download",
+    badge_apple_small: "Download on the",
+    badge_google_small: "Get it on",
+    availability: "Available on iOS and Android",
+    footer_copy: "© 2026 YouRe. All rights reserved.",
+    footer_privacy: "Privacy Policy",
+    footer_terms: "Terms of Use",
+    footer_contact: "Contact",
+  },
+  zh: {
+    nav_download: "下载",
+    hero_overline: "AI · 绘本 · 孩子",
+    hero_title_1: "每个孩子都值得一个故事。",
+    hero_title_2: "每个故事都值得你的声音。",
+    hero_sub: "扫描任意绘本，AI 朗读出声。即使你不在身边,孩子也能爱上故事。",
+    hero_btn_primary: "免费下载",
+    hero_btn_ghost: "了解工作原理",
+    phone_track: "小小森林",
+    pain_title: "是不是很熟悉？",
+    pain_sub: "每位父母都有这样的感受。",
+    pain_1_title: "\u201C爸爸,再读一遍。\u201D",
+    pain_1_sub: "今晚已经第 12 遍了。",
+    pain_2_title: "好书那么多，",
+    pain_2_sub: "时间却怎么也不够读完。",
+    pain_3_title: "如果他们能自由探索",
+    pain_3_sub: "任何一本书、任何一种语言？",
+    magic_title: "扫一扫。转换。聆听。",
+    magic_sub: "三步,变成一个可以反复回放的故事。",
+    step_1_title: "扫描任何书",
+    step_1_sub: "用手机相机对准任意一页。",
+    step_2_title: "AI 智能转换",
+    step_2_sub: "OCR 识别文字,TTS 自然朗读。",
+    step_3_title: "孩子尽情聆听",
+    step_3_sub: "随时随地,反复回放。",
+    feat_a_eyebrow: "你的书库",
+    feat_a_title: "任何实体书,任何时刻。",
+    feat_a_body: "扫描页面即可。YouRe 用自然生动的声音朗读出来。孩子可以独立聆听,按自己的节奏。",
+    chip_en: "英语",
+    chip_zh: "中文",
+    chip_ja: "日语",
+    chip_ko: "韩语",
+    chip_fr: "法语",
+    chip_de: "德语",
+    chip_es: "西班牙语",
+    chip_pt: "葡萄牙语",
+    chip_it: "意大利语",
+    chip_ru: "俄语",
+    chip_th: "泰语",
+    chip_id: "印尼语",
+    chip_vi: "越南语",
+    feat_b_eyebrow: "每一种语言",
+    feat_b_title: "同一本书,换种语言。",
+    feat_b_body: "把孩子最爱的中文故事变成英文练习。或日文,或韩文。透过他们熟悉的书学习语言。",
+    feat_c_eyebrow: "专属故事",
+    feat_c_title: "AI 创作出他们独有的故事。",
+    feat_c_body: "告诉 AI 孩子最喜欢的角色和主题。它会为他们量身写一个全新故事,然后朗读出来。",
+    feat_c_note: "✦ 由 Gemini AI 驱动",
+    feat_d_eyebrow: "永远在身边",
+    feat_d_title: "后台播放。锁屏控制。",
+    feat_d_body: "一旦故事开始,它就会继续下去。即使屏幕关闭,也像一位永不疲倦的睡前伴侣。",
+    lock_date: "6 月 6 日,星期五",
+    lock_track: "晚安森林",
+    lock_album: "YouRe · 故事书",
+    stat_books: "扫描书籍",
+    stat_hours: "聆听小时",
+    stat_langs: "支持语言",
+    global_line_1: "为家庭而生。",
+    global_line_2: "用每种语言述说。",
+    cta_title: "今晚就开始孩子的故事。",
+    cta_sub: "免费下载,无需信用卡。",
+    qr_label: "扫码下载",
+    badge_apple_small: "在以下平台下载",
+    badge_google_small: "在以下平台获取",
+    availability: "支持 iOS 与 Android",
+    footer_copy: "© 2026 YouRe. 保留所有权利。",
+    footer_privacy: "隐私政策",
+    footer_terms: "使用条款",
+    footer_contact: "联系我们",
+  },
+  ja: {
+    nav_download: "ダウンロード",
+    hero_overline: "AI · 絵本 · こども",
+    hero_title_1: "すべての子どもに物語を。",
+    hero_title_2: "すべての物語に、あなたの声を。",
+    hero_sub: "どんな絵本もスキャンするだけ。AIが声に出して読み上げます。あなたがそばにいなくても、子どもは物語に夢中になります。",
+    hero_btn_primary: "無料ダウンロード",
+    hero_btn_ghost: "使い方を見る",
+    phone_track: "ちいさな森",
+    pain_title: "こんな経験、ありませんか？",
+    pain_sub: "すべての親が知っている、あの気持ち。",
+    pain_1_title: "\u300Cもういっかい、よんで。\u300D",
+    pain_1_sub: "今夜、もう12回目。",
+    pain_2_title: "素敵な本はたくさん。",
+    pain_2_sub: "でも、読む時間が足りない。",
+    pain_3_title: "もし子どもが自由に楽しめたら",
+    pain_3_sub: "どんな本も、どんな言語でも？",
+    magic_title: "スキャン。変換。聴く。",
+    magic_sub: "3ステップで、何度でも聴ける物語に。",
+    step_1_title: "どんな本もスキャン",
+    step_1_sub: "カメラをページに向けるだけ。",
+    step_2_title: "AIが変換",
+    step_2_sub: "OCRが文字を読み、TTSが自然に発声。",
+    step_3_title: "子どもが聴く",
+    step_3_sub: "いつでも、どこでも、何度でも。",
+    feat_a_eyebrow: "あなたの本棚",
+    feat_a_title: "どんな本も、いつでも。",
+    feat_a_body: "ページをスキャンするだけ。YouReが自然で表情豊かな声で読み上げます。子どもは自分のペースで聴けます。",
+    chip_en: "英語",
+    chip_zh: "中国語",
+    chip_ja: "日本語",
+    chip_ko: "韓国語",
+    chip_fr: "フランス語",
+    chip_de: "ドイツ語",
+    chip_es: "スペイン語",
+    chip_pt: "ポルトガル語",
+    chip_it: "イタリア語",
+    chip_ru: "ロシア語",
+    chip_th: "タイ語",
+    chip_id: "インドネシア語",
+    chip_vi: "ベトナム語",
+    feat_b_eyebrow: "あらゆる言語",
+    feat_b_title: "同じ本を、新しい言語で。",
+    feat_b_body: "お気に入りの中国語の物語を英語の練習に。または日本語、韓国語に。慣れ親しんだ本で言語を学べます。",
+    feat_c_eyebrow: "オリジナルの物語",
+    feat_c_title: "AIが、その子だけの物語を。",
+    feat_c_body: "好きなキャラクターとテーマを教えてください。AIがその子のための新しい物語を書き、読み上げます。",
+    feat_c_note: "✦ Gemini AIで動作",
+    feat_d_eyebrow: "いつもそばに",
+    feat_d_title: "バックグラウンド再生。ロック画面操作。",
+    feat_d_body: "一度始まれば、物語は続きます。画面を消しても。疲れない、ねむる前の相棒のように。",
+    lock_date: "6月6日 金曜日",
+    lock_track: "おやすみの森",
+    lock_album: "YouRe · ストーリーブック",
+    stat_books: "スキャンされた本",
+    stat_hours: "視聴時間",
+    stat_langs: "対応言語",
+    global_line_1: "家族のために。",
+    global_line_2: "あらゆる言語で語られる。",
+    cta_title: "今夜、子どもの物語を始めよう。",
+    cta_sub: "無料ダウンロード。クレジットカード不要。",
+    qr_label: "QRをスキャンしてダウンロード",
+    badge_apple_small: "ダウンロード",
+    badge_google_small: "入手する",
+    availability: "iOSとAndroidに対応",
+    footer_copy: "© 2026 YouRe. All rights reserved.",
+    footer_privacy: "プライバシーポリシー",
+    footer_terms: "利用規約",
+    footer_contact: "お問い合わせ",
+  },
+  ko: {
+    nav_download: "다운로드",
+    hero_overline: "AI · 그림책 · 어린이",
+    hero_title_1: "모든 아이에게 이야기를.",
+    hero_title_2: "모든 이야기에 당신의 목소리를.",
+    hero_sub: "어떤 그림책이든 스캔하세요. AI가 소리내어 읽어줍니다. 당신이 곁에 없어도 아이는 이야기에 빠져듭니다.",
+    hero_btn_primary: "무료 다운로드",
+    hero_btn_ghost: "사용 방법 보기",
+    phone_track: "작은 숲",
+    pain_title: "익숙한 장면인가요?",
+    pain_sub: "모든 부모가 아는 그 마음.",
+    pain_1_title: "\u201C아빠, 또 읽어줘.\u201D",
+    pain_1_sub: "오늘밤 12번째.",
+    pain_2_title: "좋은 책은 너무 많고,",
+    pain_2_sub: "다 읽어줄 시간은 너무 적어요.",
+    pain_3_title: "아이가 자유롭게 만날 수 있다면",
+    pain_3_sub: "어떤 책이든, 어떤 언어로든?",
+    magic_title: "스캔. 변환. 청취.",
+    magic_sub: "세 번의 탭으로, 몇 번이고 다시 들을 수 있는 이야기로.",
+    step_1_title: "어떤 책이든 스캔",
+    step_1_sub: "카메라를 어떤 페이지에든 향하세요.",
+    step_2_title: "AI가 변환",
+    step_2_sub: "OCR이 글자를 읽고, TTS가 자연스럽게 목소리로.",
+    step_3_title: "아이가 듣습니다",
+    step_3_sub: "언제든, 어디서든, 반복해서.",
+    feat_a_eyebrow: "당신의 서재",
+    feat_a_title: "어떤 종이책이든, 언제든.",
+    feat_a_body: "페이지를 스캔하기만 하면 됩니다. YouRe가 자연스럽고 풍부한 목소리로 읽어줍니다. 아이가 자신의 속도로 들을 수 있어요.",
+    chip_en: "영어",
+    chip_zh: "중국어",
+    chip_ja: "일본어",
+    chip_ko: "한국어",
+    chip_fr: "프랑스어",
+    chip_de: "독일어",
+    chip_es: "스페인어",
+    chip_pt: "포르투갈어",
+    chip_it: "이탈리아어",
+    chip_ru: "러시아어",
+    chip_th: "태국어",
+    chip_id: "인도네시아어",
+    chip_vi: "베트남어",
+    feat_b_eyebrow: "모든 언어로",
+    feat_b_title: "같은 책, 새로운 언어.",
+    feat_b_body: "아이가 좋아하는 중국어 이야기를 영어 학습으로. 또는 일본어, 한국어로. 이미 사랑하는 책으로 언어를 배워요.",
+    feat_c_eyebrow: "단 하나의 이야기",
+    feat_c_title: "AI가 우리 아이만의 이야기를.",
+    feat_c_body: "아이가 좋아하는 캐릭터와 주제를 알려주세요. AI가 새로운 이야기를 만들고 읽어드립니다.",
+    feat_c_note: "✦ Gemini AI로 구동",
+    feat_d_eyebrow: "언제나 곁에",
+    feat_d_title: "백그라운드 재생. 잠금 화면 제어.",
+    feat_d_body: "이야기가 시작되면 계속됩니다. 화면이 꺼져도. 지치지 않는 잠자리 친구처럼.",
+    lock_date: "6월 6일 금요일",
+    lock_track: "잘 자, 숲",
+    lock_album: "YouRe · 스토리북",
+    stat_books: "스캔된 책",
+    stat_hours: "청취 시간",
+    stat_langs: "지원 언어",
+    global_line_1: "가족을 위해 만들어진.",
+    global_line_2: "모든 언어로 들려주는.",
+    cta_title: "오늘 밤, 아이의 이야기를 시작하세요.",
+    cta_sub: "무료 다운로드. 신용카드 필요 없음.",
+    qr_label: "QR 스캔으로 다운로드",
+    badge_apple_small: "다운로드",
+    badge_google_small: "다운로드",
+    availability: "iOS 및 Android 지원",
+    footer_copy: "© 2026 YouRe. 판권 소유.",
+    footer_privacy: "개인정보 처리방침",
+    footer_terms: "이용약관",
+    footer_contact: "문의하기",
+  }
+};
+
+const SCRIPT_TITLES = {
+  en: "The Forest",
+  zh: "森林",
+  ja: "森のものがたり",
+  ko: "숲 이야기"
+};
+
+let currentLang = 'en';
+
+function applyLang(lang) {
+  if (!I18N[lang]) return;
+  document.body.classList.add('lang-switching');
+  setTimeout(() => {
+    currentLang = lang;
+    document.body.dataset.lang = lang;
+    const dict = I18N[lang];
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const k = el.getAttribute('data-i18n');
+      if (dict[k] !== undefined) el.textContent = dict[k];
+    });
+    // sync lang button states
+    document.querySelectorAll('.lang-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.lang === lang);
+    });
+    // script display under globe
+    const sd = document.getElementById('scriptDisplay');
+    if (sd) sd.textContent = SCRIPT_TITLES[lang];
+    document.body.classList.remove('lang-switching');
+  }, 150);
+}
+
+document.querySelectorAll('.lang-btn, .footer-lang').forEach(btn => {
+  btn.addEventListener('click', () => applyLang(btn.dataset.lang));
+});
+
+/* ───────── Sticky nav state ───────── */
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 30);
+});
+
+/* ───────── IntersectionObserver reveals ───────── */
+const reveals = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('in');
+      io.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
+reveals.forEach(r => io.observe(r));
+
+/* ───────── Counter animation ───────── */
+const counters = document.querySelectorAll('[data-counter]');
+const counterIO = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      animateCounter(e.target);
+      counterIO.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.5 });
+counters.forEach(c => counterIO.observe(c));
+
+function animateCounter(el) {
+  const target = parseInt(el.dataset.counter, 10);
+  const suffix = el.dataset.suffix || '';
+  const duration = 1500;
+  const start = performance.now();
+  function tick(now) {
+    const t = Math.min(1, (now - start) / duration);
+    const eased = 1 - Math.pow(1 - t, 3); // ease-out cubic
+    const val = Math.round(target * eased);
+    el.textContent = formatNumber(val) + suffix;
+    if (t < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+function formatNumber(n) {
+  if (n >= 1000) return n.toLocaleString('en-US');
+  return String(n);
+}
+
+/* ───────── Magic stars canvas ───────── */
+(function initMagicStars() {
+  const canvas = document.getElementById('magicStarsCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const COLORS = ['#FFAA6B','#FF8C42','#FFF4D6','#9B85FF','#C9B7FF','#ffffff'];
+  const stars = [];
+  function spawnStar() {
+    const size = 4 + Math.random() * 8;
+    stars.push({
+      x: canvas.offsetWidth * (0.15 + Math.random() * 0.7),
+      y: canvas.offsetHeight * (0.55 + Math.random() * 0.35),
+      vx: (Math.random() - 0.5) * 0.8,
+      vy: -(1.2 + Math.random() * 1.8),
+      size, alpha: 0, fadeIn: true,
+      color: COLORS[Math.floor(Math.random() * COLORS.length)],
+      rot: Math.random() * Math.PI * 2,
+      rotV: (Math.random() - 0.5) * 0.05,
+    });
+  }
+  function drawStar(x, y, r, rot, alpha, color) {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(rot);
+    ctx.globalAlpha = alpha;
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    for (let i = 0; i < 8; i++) {
+      const a = (i * Math.PI) / 4;
+      const rad = i % 2 === 0 ? r : r * 0.45;
+      i === 0 ? ctx.moveTo(Math.cos(a)*rad, Math.sin(a)*rad) : ctx.lineTo(Math.cos(a)*rad, Math.sin(a)*rad);
+    }
+    ctx.closePath();
+    ctx.fill();
+    ctx.restore();
+  }
+  let spawnTimer = 0;
+  function tick() {
+    if (!canvas.isConnected) return;
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    if (++spawnTimer % 18 === 0) spawnStar();
+    for (let i = stars.length - 1; i >= 0; i--) {
+      const s = stars[i];
+      s.x += s.vx; s.y += s.vy; s.rot += s.rotV;
+      s.fadeIn ? (s.alpha += 0.06, s.alpha >= 0.9 && (s.alpha = 0.9, s.fadeIn = false)) : (s.alpha -= 0.012);
+      if (s.alpha <= 0) { stars.splice(i, 1); continue; }
+      drawStar(s.x, s.y, s.size, s.rot, s.alpha, s.color);
+    }
+    requestAnimationFrame(tick);
+  }
+  const obs = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting) { tick(); obs.disconnect(); }
+  }, { threshold: 0.3 });
+  obs.observe(canvas);
+})();
+
+/* ───────── Language script display rotation under globe ───────── */
+const scriptOrder = ['en', 'zh', 'ja', 'ko'];
+let scriptIdx = 0;
+setInterval(() => {
+  const sd = document.getElementById('scriptDisplay');
+  if (!sd) return;
+  scriptIdx = (scriptIdx + 1) % scriptOrder.length;
+  sd.style.opacity = '0';
+  setTimeout(() => {
+    sd.textContent = SCRIPT_TITLES[scriptOrder[scriptIdx]];
+    sd.style.opacity = '1';
+  }, 250);
+}, 2200);
+
+/* ───────── QR code grid generation ───────── */
+(function buildQR() {
+  const grid = document.getElementById('qrGrid');
+  if (!grid) return;
+  const SIZE = 21; // 21x21 grid (typical small QR)
+  grid.style.gridTemplateColumns = `repeat(${SIZE}, 1fr)`;
+  grid.style.gridTemplateRows = `repeat(${SIZE}, 1fr)`;
+  grid.style.background = 'white';
+  grid.style.padding = '0';
+  // deterministic pseudo-random pattern (seeded)
+  let seed = 42;
+  function rnd() { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; }
+  function isCorner(r, c) {
+    return (r < 7 && c < 7) || (r < 7 && c >= SIZE - 7) || (r >= SIZE - 7 && c < 7);
+  }
+  function cornerPattern(r, c) {
+    let lr = r, lc = c;
+    if (c >= SIZE - 7) lc = c - (SIZE - 7);
+    if (r >= SIZE - 7) lr = r - (SIZE - 7);
+    // inside one of the 7x7 finder regions, position within is (lr, lc) but we need to fix the right-corner
+    let pr = r < 7 ? r : (SIZE - 1 - r);
+    let pc = c < 7 ? c : (SIZE - 1 - c);
+    if (pr === 0 || pr === 6 || pc === 0 || pc === 6) return true;
+    if (pr >= 2 && pr <= 4 && pc >= 2 && pc <= 4) return true;
+    return false;
+  }
+  for (let r = 0; r < SIZE; r++) {
+    for (let c = 0; c < SIZE; c++) {
+      const span = document.createElement('span');
+      let on;
+      if (isCorner(r, c)) {
+        on = cornerPattern(r, c);
+      } else {
+        on = rnd() > 0.5;
+      }
+      span.style.background = on ? 'var(--text-dark)' : 'transparent';
+      grid.appendChild(span);
+    }
+  }
+})();
+</script>
 </body>
-</html> 
+</html>
