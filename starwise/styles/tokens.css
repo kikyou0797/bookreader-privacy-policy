@@ -1,0 +1,66 @@
+:root {
+  /* Color */
+  --ink: #172033;
+  --ink-soft: #516070;
+  --ink-muted: #7a8792;
+  --cream: #fff8ec;
+  --cream-deep: #f5ead8;
+  --paper: #fffdf8;
+  --paper-warm: #fff6e4;
+  --indigo: #3438a8;
+  --indigo-2: #6864ff;
+  --aqua: #7ad8d0;
+  --mint: #dff7db;
+  --peach: #ffb18a;
+  --rose: #ff7f9f;
+  --gold: #ffc83d;
+  --gold-deep: #cc8700;
+  --plum: #35233f;
+  --border: rgba(42, 48, 72, 0.12);
+  --border-strong: rgba(42, 48, 72, 0.2);
+
+  /* Compatibility tokens used by legal pages */
+  --color-primary: var(--indigo);
+  --color-primary-soft: #ecebff;
+  --color-gold: var(--gold);
+  --color-gold-soft: #fff1c5;
+  --text-primary: var(--ink);
+  --text-secondary: var(--ink-soft);
+  --surface: var(--paper);
+  --surface-alt: #fff2dd;
+  --surface-tint: #f1eadf;
+
+  /* Typography */
+  --font-display: "Plus Jakarta Sans", "Avenir Next", system-ui, sans-serif;
+  --font-body: "Inter", "Avenir Next", system-ui, sans-serif;
+  --text-hero: clamp(3rem, 1.8rem + 5vw, 6.7rem);
+  --text-h2: clamp(2rem, 1.35rem + 2.7vw, 4rem);
+  --text-h3: clamp(1.18rem, 1.05rem + 0.65vw, 1.55rem);
+  --text-base: clamp(1rem, 0.96rem + 0.2vw, 1.08rem);
+  --text-sm: 0.875rem;
+
+  /* Spacing & shape */
+  --space-section: clamp(4.5rem, 3.4rem + 5vw, 8.5rem);
+  --container-max: 1180px;
+  --radius-sm: 16px;
+  --radius-card: 32px;
+  --radius-xl: 44px;
+  --radius-pill: 999px;
+  --shadow-card: 0 28px 90px -45px rgba(38, 32, 58, 0.55);
+  --shadow-soft: 0 18px 52px -36px rgba(38, 32, 58, 0.5);
+  --shadow-glow: 0 30px 90px -50px rgba(104, 100, 255, 0.7);
+
+  /* Motion */
+  --duration-fast: 180ms;
+  --duration-normal: 420ms;
+  --duration-slow: 900ms;
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Gradients */
+  --gradient-hero: radial-gradient(circle at 15% 10%, rgba(255, 200, 61, 0.48), transparent 28%),
+    radial-gradient(circle at 82% 4%, rgba(122, 216, 208, 0.55), transparent 34%),
+    linear-gradient(135deg, #fff8ec 0%, #fff6e5 44%, #e9ecff 100%);
+  --gradient-accent: linear-gradient(135deg, #3438a8 0%, #6864ff 52%, #ffb18a 120%);
+  --gradient-night: radial-gradient(circle at 25% 10%, rgba(255, 200, 61, 0.22), transparent 30%),
+    linear-gradient(145deg, #23162d 0%, #3438a8 58%, #5d68cf 100%);
+}
